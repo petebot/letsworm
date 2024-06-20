@@ -17,28 +17,49 @@
 </script>
 
 {#if imageUrl}
-  <img src={imageUrl} alt={portableText.value.alt || ""} class={alignment} />
+  <figure class={alignment}>
+    <img src={imageUrl} alt={portableText.value.alt || ""} />
+    {#if portableText.value.caption}
+      <figcaption>{portableText.value.caption}</figcaption>
+    {/if}
+  </figure>
 {/if}
 
 <style>
   img {
+    max-width: 100%;
+  }
+  figure {
     max-width: 50vw;
+    margin: 2rem 0 1rem;
   }
-  img.left {
+  figure.left {
     float: left;
-    margin-right: 1em;
+    margin-right: 2rem;
   }
-  img.right {
+  figure.right {
     float: right;
-    margin-left: 1em;
+    margin-left: 2rem;
   }
-  img.full-width {
+  figure.full-width {
     width: 100%;
+    margin: 2rem 0;
+    max-width: 100%;
     display: block;
   }
+  figure figcaption {
+    font-size: 1em;
+    text-align: center;
+    font-style: italic;
+    border-bottom: 1px solid
+      color-mix(in srgb, var(--color-text) 10%, white 90%);
+    padding: 0 0 0.5em;
+  }
   @media (max-width: 700px) {
-    img {
+    figure {
       max-width: 100%;
+
+      margin: 1rem 0;
     }
   }
 </style>
