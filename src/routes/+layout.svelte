@@ -1,6 +1,6 @@
 <script lang="ts">
   import "./styles.css";
-  import Nav from "$lib/nav/Nav.svelte";
+  import Header from "$lib/nav/Header.svelte";
   import PageTransition from "$lib/helpers/PageTransition.svelte";
 
   export let data;
@@ -21,7 +21,7 @@
   <meta name="theme-color" content="#ffffff" />
 </svelte:head>
 
-<Nav {categories}></Nav>
+<Header {categories}></Header>
 
 <div class="app">
   <main>

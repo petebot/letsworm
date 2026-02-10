@@ -9,7 +9,10 @@
 
 <ul class="categories metadata">
   <li>
-    <a class={$page.url.pathname === "/" ? "active" : ""} href="/">All Worms</a>
+    <a
+      class={$page.url.pathname.startsWith("/worms") ? "active" : ""}
+      href="/worms">All Worms</a
+    >
   </li>
   {#each categories as category}
     <li>
