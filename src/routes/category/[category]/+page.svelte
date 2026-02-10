@@ -1,62 +1,104 @@
 <script lang="ts">
-  import { beforeUpdate } from 'svelte';
   import Worm from "$lib/display/Worm.svelte";
-  export let data: any;
+  import type { Post } from "$lib/data/posts";
 
-  let categoryTitle;
-  let category;
-  let posts;
-  let cyclePosts;
-  let groupedStoriesArray = [];
+  export let data: {
+    data: {
+      categoryTitle?: string;
+      category?: string;
+      posts?: Post[];
+      storyCycles?: Post[];
+    };
+  };
 
-  beforeUpdate(() => {
-    categoryTitle = data.data.categoryTitle;
-    category = data.data.category;
-    posts = data.data.posts || [];
-    cyclePosts = data.data.storyCycles || [];
-    updateGroupedStories();
-  });
+  type CycleGroup = {
+    title: string;
+    slug?: string;
+    description?: string;
+    stories: Post[];
+  };
 
-  // Update grouped stories whenever cyclePosts change
-  const updateGroupedStories = () => {
-    if (cyclePosts.length > 0) {
-      const groupedStories = cyclePosts.reduce((grouped, story) => {
-        const storyCycleName = story.storyCycleName[0].title;
-        const storyCycleDescription = story.storyCycleName[0].description;
+  const ensureArray = <T,>(value: T[] | undefined | null): T[] =>
+    Array.isArray(value) ? value : [];
 
-        if (!grouped[storyCycleName]) {
-          grouped[storyCycleName] = { stories: [] };
-        }
+  const slugValue = (slug?: { current?: string }): string =>
+    slug?.current ?? "";
 
-        grouped[storyCycleName].stories.push(story);
-        return grouped;
-      }, {});
+  const publishedTime = (value?: string): number => {
+    const parsed = value ? Date.parse(value) : NaN;
+    return Number.isNaN(parsed) ? 0 : parsed;
+  };
 
-      for (const key in groupedStories) {
-        groupedStories[key].stories.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+  const groupStoryCycles = (stories: Post[]): CycleGroup[] => {
+    const groups = new Map<string, CycleGroup>();
+
+    for (const story of stories) {
+      if (!story) continue;
+      const cycle = ensureArray(story.storyCycleName)[0];
+      if (!cycle) continue;
+
+      const key =
+        cycle._id ??
+        slugValue(cycle.slug) ??
+        `${cycle.title ?? "cycle"}-${groups.size}`;
+
+      if (!groups.has(key)) {
+        groups.set(key, {
+          title: cycle.title ?? "Story Cycle",
+          slug: slugValue(cycle.slug),
+          description: cycle.description ?? undefined,
+          stories: [],
+        });
       }
 
-      groupedStoriesArray = Object.entries(groupedStories).map(([key, value]) => ({
-        storyCycleName: key,
-        stories: value.stories
-      }));
+      const group = groups.get(key);
+      if (!group) continue;
+
+      group.stories.push(story);
     }
+
+    for (const group of groups.values()) {
+      group.stories.sort(
+        (first, second) =>
+          publishedTime(second?.publishedAt) -
+          publishedTime(first?.publishedAt),
+      );
+    }
+
+    return Array.from(groups.values()).sort((a, b) =>
+      a.title.localeCompare(b.title),
+    );
   };
+
+  $: categoryTitle = data?.data?.categoryTitle ?? "";
+  $: category = data?.data?.category ?? "";
+  $: posts = ensureArray(data?.data?.posts);
+  $: cyclePosts = ensureArray(data?.data?.storyCycles);
+  $: groupedCycles = groupStoryCycles(cyclePosts);
 </script>
 
 <main>
   <h1>{categoryTitle}</h1>
-  
-  {#if category === 'story-cycles'}
-    {#each groupedStoriesArray as cycle}
-      <h2>{cycle.storyCycleName}</h2>
-      <ul class="auto-grid">
-        {#each cycle.stories as item}
-          <Worm {item} />
-        {/each}
-      </ul>
-    {/each}
-  {:else if posts && posts.length > 0}
+
+  {#if category === "story-cycles"}
+    {#if groupedCycles.length > 0}
+      {#each groupedCycles as cycle}
+        <section class="cycle-block" id={cycle.slug || undefined}>
+          <h2>{cycle.title}</h2>
+          {#if cycle.description}
+            <p class="lead">{cycle.description}</p>
+          {/if}
+          <ul class="auto-grid">
+            {#each cycle.stories as item}
+              <Worm {item} />
+            {/each}
+          </ul>
+        </section>
+      {/each}
+    {:else}
+      <p>No story cycles available.</p>
+    {/if}
+  {:else if posts.length > 0}
     <ul class="auto-grid">
       {#each posts as item}
         <Worm {item} />
@@ -70,5 +112,12 @@
 <style>
   h1 {
     text-align: left;
+  }
+
+  .cycle-block {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 3rem;
   }
 </style>
