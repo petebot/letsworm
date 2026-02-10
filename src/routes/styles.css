@@ -8,12 +8,7 @@
 		Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 	--font-mono: 'Fira Mono', monospace;
 	
-	/* Colors - Text */
-	--color-text: var(--color-black);
-	--color-text-subtle: var(--color-black-tint-40);
-	--color-text-inverse: var(--color-white);
-	--color-text-accent: var(--color-primary);
-	--color-text-accent-hover: var(--color-primary-tint-20);
+
 	
 	/* Colors - Brand (aligned with Figma tokens) */
 	--color-primary: #8C5061; /* Figma primary */
@@ -22,6 +17,7 @@
 	--color-mauve: #c88b9e;
 	--color-mauve-light: #d9a5b3;
 	--color-cream: #f5f1e8;
+	--pureblack: #000000;
 
 	/* Primary tints (mix with white) */
 	--color-primary-tint-10: color-mix(in srgb, var(--color-white) 10%, var(--color-primary));
@@ -80,6 +76,17 @@
 	--color-black-tint-40: color-mix(in srgb, var(--color-white) 40%, var(--color-black));
 	--color-black-tint-50: color-mix(in srgb, var(--color-white) 50%, var(--color-black));
 
+	/* * Black shades (mix pure black with brand black to create subtle black shades) */
+	--color-black-shade-10: color-mix(in srgb, var(--pureblack) 10%, var(--color-black));
+	--color-black-shade-20: color-mix(in srgb, var(--pureblack) 20%, var(--color-black));
+	--color-black-shade-30: color-mix(in srgb, var(--pureblack) 30%, var(--color-black));
+	--color-black-shade-40: color-mix(in srgb, var(--pureblack) 40%, var(--color-black));
+	--color-black-shade-50: color-mix(in srgb, var(--pureblack) 50%, var(--color-black));
+
+	/* Precomputed darker black for dark-mode backgrounds */
+	--color-black-dark: color-mix(in srgb, var(--pureblack) 50%, var(--color-black));
+
+
 	/* White shades (mix site white with brand black to create subtle off-whites) */
 	--color-white-shade-10: color-mix(in srgb, var(--color-black) 10%, var(--color-white));
 	--color-white-shade-20: color-mix(in srgb, var(--color-black) 20%, var(--color-white));
@@ -87,12 +94,23 @@
 	--color-white-shade-40: color-mix(in srgb, var(--color-black) 40%, var(--color-white));
 	--color-white-shade-50: color-mix(in srgb, var(--color-black) 50%, var(--color-white));
 	
+
+		/* Colors - Text */
+	--color-text: var(--color-black);
+	--color-text-subtle: var(--color-black-tint-40);
+	--color-text-inverse: var(--color-white);
+	--color-text-accent: var(--color-primary);
+	--color-text-accent-hover: var(--color-primary-tint-20);
+
 	/* Colors - Backgrounds */
 	--color-bg-primary: var(--color-white);
-	--color-bg-hero: var(--color-black);
-	--color-bg-footer: var(--color-black);
+	--color-bg-hero: var(--color-white-shade-10);
+	--color-bg-footer: var(--color-white-shade-10);
 	--color-bg-overlay: rgba(0, 0, 0, 0.6);
 	--base-background-color: var(--color-white);
+
+	/* alias used by components that expect a `--color-background` token */
+	--color-background: var(--base-background-color);
 	
 	/* Spacing Scale */
 	--space-xs: 0.25rem;
@@ -133,8 +151,7 @@
 	--z-modal: 400;
 	--z-popover: 500;
 	--z-tooltip: 600;
-
-
+}
 /* Dark mode token overrides (toggle by adding `data-theme="dark"` to the document root) */
 [data-theme='dark'] {
 	--color-text: var(--color-white);
@@ -143,24 +160,41 @@
 
 	--color-bg-primary: var(--color-black);
 	--color-bg-hero: var(--color-white);
-	--color-bg-footer: var(--color-white);
+	/* darker footer background computed from precomputed dark black */
+	--color-bg-footer: color-mix(in srgb, var(--pureblack) 10%, var(--color-black-dark));
 	--base-background-color: var(--color-black);
+
+	/* make `--color-background` available for components using that token */
+	--color-background: var(--base-background-color);
+
+	/* accents in dark mode: use lighter tints of the primary for contrast */
+	--color-text-accent: var(--color-primary-tint-30);
+	--color-text-accent-hover: var(--color-primary-tint-10);
 }
 
 /* Respect user's OS theme preference automatically */
 @media (prefers-color-scheme: dark) {
 	:root {
+		/* use precomputed darker black for backgrounds to avoid circular refs */
+		--color-bg-black: var(--color-black-dark);
+		--color-primary: var(--color-mauve-light);
 		--color-text: var(--color-white);
 		--color-text-subtle: var(--color-white-shade-40);
 		--color-text-inverse: var(--color-black);
 
-		--color-bg-primary: var(--color-black);
-		--color-bg-hero: var(--color-white);
-		--color-bg-footer: var(--color-white);
+		--color-bg-primary: var(--color-bg-black);
+		--color-bg-hero: var(--color-black-shade-10);
+		/* compute a darker footer tint on top of the dark background token */
+		--color-bg-footer: color-mix(in srgb, var(--pureblack) 10%, var(--color-bg-black));
+		--base-background-color: var(--color-bg-black);
+
+		/* make `--color-background` available for components using that token */
+		--color-background: var(--base-background-color);
+
+		/* accents in dark mode: use lighter tints of the primary for contrast */
+		--color-text-accent: var(--color-primary-tint-30);
+		--color-text-accent-hover: var(--color-primary-tint-10);
 	}
-}
-	font-family: var(--font-body);
-	color: var(--color-text);
 
 }
 
@@ -172,6 +206,9 @@ body {
 	background-size: 100vw 100vh;
 
 	background-color: var(--base-background-color);
+
+	font-family: var(--font-body);
+	color: var(--color-text);
 	
 }
 

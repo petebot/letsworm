@@ -1,7 +1,9 @@
 <script lang="ts">
   import "./styles.css";
   import Header from "$lib/nav/Header.svelte";
+  import Footer from "$lib/nav/Footer.svelte";
   import PageTransition from "$lib/helpers/PageTransition.svelte";
+  import BackToTop from "$lib/ui/BackToTop.svelte";
 
   export let data;
 
@@ -30,6 +32,10 @@
     </PageTransition>
   </main>
 </div>
+
+<Footer />
+
+<BackToTop />
 
 <style>
   .app {

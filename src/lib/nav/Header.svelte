@@ -118,7 +118,7 @@
     width: 100%;
     border-bottom: 1px solid
       color-mix(in srgb, var(--color-text) 10%, transparent);
-    background: var(--color-surface);
+    background: var(--base-background-color);
   }
   .header-inner {
     max-width: 64rem;
@@ -188,7 +188,7 @@
     left: 0;
     display: flex;
     gap: 0.5rem;
-    background: var(--color-surface);
+    background: var(--base-background-color);
     padding: 0.5rem;
     border-radius: 8px;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
