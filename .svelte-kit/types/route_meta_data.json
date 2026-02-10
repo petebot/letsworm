@@ -8,6 +8,10 @@
 		"src/routes/category/[category]/+page.ts",
 		"src/routes/+layout.ts"
 	],
+	"/worms": [
+		"src/routes/worms/+page.ts",
+		"src/routes/+layout.ts"
+	],
 	"/[slug]": [
 		"src/routes/[slug]/+page.ts",
 		"src/routes/+layout.ts"
