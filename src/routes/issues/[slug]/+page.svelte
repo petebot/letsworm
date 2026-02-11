@@ -8,7 +8,9 @@
   const issue = data?.issue ?? null;
 
   const issueImage = issue?.heroImage
-    ? urlFor(issue.heroImage as any).width(1600).url()
+    ? urlFor(issue.heroImage as any)
+        .width(1600)
+        .url()
     : null;
 
   const getByline = (item: any): string | undefined => {
@@ -40,7 +42,9 @@
           title={item.title}
           byline={getByline(item)}
           excerpt={item.excerpt}
-          coverUrl={item?.mainImage ? urlFor(item.mainImage).width(1600).url() : null}
+          coverUrl={item?.mainImage
+            ? urlFor(item.mainImage).width(1600).url()
+            : null}
           href={item?.slug?.current ? `/${item.slug.current}` : null}
           link={true}
         />

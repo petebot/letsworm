@@ -74,6 +74,21 @@
     background-position: var(--cover-position, center center);
     transform-origin: center;
     width: 100%;
+    transition: 1s ease-in-out;
+  }
+
+  .story-hero .hero-link:after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 0 0 transparent;
+    transition: all 0.4s ease-in-out 0.2s;
+  }
+  .story-hero:hover .hero-link:after {
+    box-shadow: inset 0 0 0 1rem var(--color-primary-a50);
+  }
+  .story-hero:hover .hero-link .cover {
+    transform: scale(1.05);
   }
 
   .cover::after {
@@ -90,9 +105,11 @@
   }
 
   .meta {
-    position: relative;
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
     z-index: 2;
-    max-width: 25rem;
+    max-width: 35rem;
     padding: 2rem;
     box-sizing: border-box;
     background: var(--base-background-color, rgba(255, 255, 255, 0.85));
