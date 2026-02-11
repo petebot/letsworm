@@ -1,6 +1,7 @@
 <script lang="ts">
   import Worm from "$lib/display/Worm.svelte";
   import IssueHero from "$lib/display/IssueHero.svelte";
+  import StoryHero from "$lib/display/StoryHero.svelte";
   import type { Post } from "$lib/data/posts";
   import { urlFor } from "../sanity";
 
@@ -228,7 +229,14 @@
     return entrySlug ? `/${entrySlug}` : "/category/story-cycles";
   };
 
-  $: posts = ensureArray(data?.data);
+  // Prefer stories from the latest published issue (if present), otherwise fall back to global posts
+  $: posts = ensureArray(
+    data?.issue &&
+      Array.isArray(data.issue.stories) &&
+      data.issue.stories.length > 0
+      ? data.issue.stories
+      : data?.data,
+  );
   $: featured = posts[0];
   $: supporting = posts.slice(1, MAX_SUPPORTING_STORIES + 1);
 
@@ -292,209 +300,21 @@
     <p>No stories available.</p>
   </section>
 {:else}
-  <section class="front-page">
-    {#if featured}
-      <div class="front-main">
-        <div class="front-lead">
-          <h2 class="section-heading">Lead Story</h2>
-          <ul class="story-list feature-list">
-            <Worm item={featured} />
-          </ul>
-        </div>
-
-        {#if fallbackSection && fallbackSection.items.length > 0}
-          <div class="latest-block">
-            <h2 class="section-heading">Latest Dispatches</h2>
-            <ul class="story-list latest-list">
-              {#each fallbackSection.items as item}
-                <Worm {item} />
-              {/each}
-            </ul>
-          </div>
-        {/if}
-      </div>
-    {/if}
-
-    {#if supporting.length > 0}
-      <aside class="front-rail">
-        <h2 class="section-heading">In Brief</h2>
-        <ul class="story-list supporting-list">
-          {#each supporting as item}
-            <Worm {item} />
-          {/each}
-        </ul>
-      </aside>
-    {/if}
-  </section>
-
-  {#if renderBlocks.length > 0}
-    <div class="section-wrap">
-      {#each renderBlocks as block}
-        {#if block.kind === "sets"}
-          <section class="section-block">
-            <header class="section-header">
-              <span class="section-heading">{block.title}</span>
-              <a class="section-more" href="/category/story-cycles">View all</a>
-            </header>
-            <ul class="auto-grid set-grid">
-              {#each block.items as summary}
-                <li class="set-card">
-                  {#if summary.entry?.mainImage}
-                    <a
-                      class="set-card__media"
-                      href={setHref(summary)}
-                      aria-label={`Visit ${summary.title}`}
-                    >
-                      <img
-                        src={urlFor(summary.entry.mainImage)
-                          .width(512)
-                          .height(288)
-                          .url()}
-                        alt={summary.entry?.title ?? summary.title}
-                      />
-                    </a>
-                  {/if}
-                  <h3><a href={setHref(summary)}>{summary.title}</a></h3>
-                  {#if summary.description}
-                    <p class="excerpt">{summary.description}</p>
-                  {/if}
-                </li>
-              {/each}
-            </ul>
-          </section>
-        {:else}
-          <section class="section-block">
-            <header class="section-header">
-              {#if block.section.slug}
-                <a
-                  class="section-heading"
-                  href={`/category/${block.section.slug}`}
-                >
-                  {block.section.title}
-                </a>
-              {:else}
-                <span class="section-heading">{block.section.title}</span>
-              {/if}
-              {#if block.section.slug}
-                <a
-                  class="section-more"
-                  href={`/category/${block.section.slug}`}
-                >
-                  View all
-                </a>
-              {/if}
-            </header>
-            <ul class="auto-grid section-grid">
-              {#each block.section.items as item}
-                <Worm {item} />
-              {/each}
-            </ul>
-          </section>
-        {/if}
-      {/each}
-    </div>
-  {/if}
+  <div class="issue-stories">
+    {#each posts as item (item?.slug?.current)}
+      <StoryHero
+        title={item.title}
+        byline={item.author}
+        excerpt={item.excerpt}
+        coverUrl={item?.mainImage ? urlFor(item.mainImage).width(1600).url() : null}
+        href={item?.slug?.current ? `/${item.slug.current}` : null}
+        link={true}
+      />
+    {/each}
+  </div>
 {/if}
 
 <style>
-  .front-page {
-    display: grid;
-    gap: 2.5rem;
-    margin-bottom: 3rem;
-  }
-
-  @media (min-width: 960px) {
-    .front-page {
-      grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
-      align-items: start;
-    }
-  }
-
-  .front-main {
-    display: grid;
-    gap: 2.5rem;
-  }
-
-  .front-lead,
-  .front-rail,
-  .latest-block {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .story-list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: grid;
-    gap: 2rem;
-  }
-
-  .feature-list {
-    grid-template-columns: 1fr;
-  }
-
-  .latest-list {
-    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
-    gap: 1.75rem;
-  }
-
-  .supporting-list {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .section-heading {
-    font-size: 1.25rem;
-    letter-spacing: 0.08rem;
-  }
-
-  .section-wrap {
-    display: grid;
-    gap: 3rem;
-  }
-
-  .section-block {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .section-header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-
-  .section-more {
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 0.1rem;
-  }
-
-  .section-grid {
-    --auto-grid-min-size: 14rem;
-  }
-
-  .set-grid {
-    --auto-grid-min-size: 16rem;
-  }
-
-  .set-card {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .set-card__media img {
-    width: 100%;
-    display: block;
-  }
-
   .empty-state {
     margin: 4rem 0;
     text-align: center;
