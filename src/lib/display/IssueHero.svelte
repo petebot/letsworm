@@ -103,11 +103,6 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.14),
-      rgba(0, 0, 0, 0.55)
-    );
     mix-blend-mode: multiply;
     pointer-events: none;
   }
@@ -138,18 +133,20 @@
     letter-spacing: 0.12em;
     margin: 0 0 0.75rem 0;
     color: var(--color-text);
+    text-shadow: 1px 1px 0 var(--base-background-color);
   }
 
   .issue-title {
     margin: 0;
     font-weight: 800;
-    line-height: 0.95;
+    line-height: 0.5;
     font-size: clamp(2.25rem, 6vw, 7.5rem);
     color: var(--color-text, #fff);
     text-transform: uppercase;
     letter-spacing: -0.02em;
     max-width: 52rem;
     text-align: left;
+    text-shadow: 1px 1px 0 var(--base-background-color);
   }
 
   .issue-sub {
