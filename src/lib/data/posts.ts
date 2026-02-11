@@ -21,6 +21,8 @@ export type Post = {
   excerpt?: string;
   slug?: { current?: string };
   author?: string;
+  writer?: string;
+  illustrator?: string;
   categories?: CategorySummary[];
   storyCycleName?: StoryCycleSummary[];
 };
@@ -33,6 +35,8 @@ const POSTS_QUERY = `
     excerpt,
     slug,
     "author": author->name,
+    "writer": writer->name,
+    "illustrator": illustrator->name,
     "categories": categories[]->{
       _id,
       title,

@@ -6,7 +6,29 @@ const LATEST_ISSUE_QUERY = `*[_type == "issue" && published == true] | order(iss
   issueNumber,
   slug,
   publishedAt,
-  heroImage
+  heroImage,
+  "stories": stories[]->{
+    title,
+    mainImage,
+    publishedAt,
+    excerpt,
+    slug,
+    "author": author->name,
+    "writer": writer->name,
+    "illustrator": illustrator->name,
+    "categories": categories[]->{
+      _id,
+      title,
+      slug,
+      description
+    },
+    "storyCycleName": storyCycleName[]->{
+      _id,
+      title,
+      slug,
+      description
+    }
+  }
 }`;
 
 export async function load() {
