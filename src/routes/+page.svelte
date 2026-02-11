@@ -56,7 +56,8 @@
         .width(1600)
         .url()
     : null;
-  $: issueNumber = issue?.issueNumber ? parseInt(issue.issueNumber, 10) : "";
+  import { normalizeIssueNumber } from "$lib/helpers/formatIssueNumber";
+  $: issueNumber = normalizeIssueNumber(issue?.issueNumber);
   $: issueHref = issue?.slug?.current
     ? `/issues/${issue.slug.current}`
     : `/issues`;
