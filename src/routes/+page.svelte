@@ -1,9 +1,10 @@
 <script lang="ts">
   import Worm from "$lib/display/Worm.svelte";
+  import IssueHero from "$lib/display/IssueHero.svelte";
   import type { Post } from "$lib/data/posts";
   import { urlFor } from "../sanity";
 
-  export let data: { data?: Post[] };
+  export let data: { data?: Post[]; issue?: any };
 
   const MAX_SUPPORTING_STORIES = 3;
   const MAX_SECTION_STORIES = 4;
@@ -57,6 +58,15 @@
       return true;
     });
   };
+
+  $: issue = data.issue;
+  $: issueImage = issue?.heroImage
+    ? urlFor(issue.heroImage).width(1600).url()
+    : null;
+  $: issueNumber = issue?.issueNumber ? parseInt(issue.issueNumber, 10) : "";
+  $: issueHref = issue?.slug?.current
+    ? `/issues/${issue.slug.current}`
+    : `/issues`;
 
   const buildSections = (items: Post[]) => {
     const sections = new Map<string, OrderedSection>();
@@ -264,6 +274,18 @@
   <title>Let's Worm</title>
   <meta name="description" content="Let's Worm" />
 </svelte:head>
+
+{#if issue}
+  <IssueHero
+    title={issue.title}
+    number={issueNumber}
+    issueImageUrl={issueImage}
+    href={issueHref}
+    link={false}
+  />
+{:else}
+  <p>No issue available</p>
+{/if}
 
 {#if posts.length === 0}
   <section class="empty-state">

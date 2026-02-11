@@ -1,35 +1,27 @@
 <script lang="ts">
-  import { onMount, onDestroy } from "svelte";
-  import { tweened } from "svelte/motion";
-  import { cubicOut } from "svelte/easing";
-
   let visible = false;
   const threshold = 320;
 
-  function onScroll() {
-    visible = window.scrollY > threshold;
-  }
+  // `scrollY` is bound to the window scroll position via <svelte:window bind:scrollY />
+  let scrollY = 0;
+
+  $: visible = scrollY > threshold;
 
   function scrollToTop() {
-    // smooth scroll using window.scrollTo
+    if (typeof window === "undefined") return;
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
-
-  onMount(() => {
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-  });
-
-  onDestroy(() => {
-    window.removeEventListener("scroll", onScroll);
-  });
 </script>
+
+<svelte:window bind:scrollY />
 
 <button
   class="back-to-top"
   aria-label="Back to top"
   on:click={scrollToTop}
   class:visible
+  aria-hidden={!visible}
+  tabindex={visible ? 0 : -1}
 >
   ↑
 </button>
@@ -37,10 +29,10 @@
 <style>
   .back-to-top {
     position: fixed;
-    right: 1rem;
+    right: 3.5rem;
     bottom: 1.5rem;
-    background: var(--color-text);
-    color: var(--color-bg-primary);
+    background: var(--color-bg-footer);
+    color: var(--color-text-subtle);
     border: none;
     border-radius: 999px;
     width: 3rem;
