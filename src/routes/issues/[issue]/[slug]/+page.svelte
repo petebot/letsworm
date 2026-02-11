@@ -1,6 +1,6 @@
 <script lang="ts">
   import PrevNext from "$lib/nav/PrevNext.svelte";
-  import { urlFor } from "$lib/sanity";
+  import { urlFor } from "../../../../sanity";
   import { PortableText } from "@portabletext/svelte";
   import InlineImage from "$lib/display/InlineImage.svelte";
   import { normalizeIssueNumber } from "$lib/helpers/formatIssueNumber";
