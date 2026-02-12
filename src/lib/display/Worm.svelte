@@ -9,7 +9,9 @@
 </script>
 
 <li>
-  {#if item.mainImage && item.mainImage.asset && item.slug.current && item.title}<a href="/{item.slug.current}">
+  {#if item.mainImage && item.mainImage.asset && item.slug.current && item.title}<a
+      href="/{item.slug.current}"
+    >
       <img
         src={urlFor(item.mainImage).width(512).height(288).url()}
         alt={item.title}

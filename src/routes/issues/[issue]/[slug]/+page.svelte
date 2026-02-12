@@ -96,6 +96,9 @@
 
 <style>
   main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin: 2rem auto;
     padding: 0 1rem;
     max-width: 64rem;
