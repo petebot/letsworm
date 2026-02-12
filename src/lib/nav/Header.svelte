@@ -1,10 +1,15 @@
 <script lang="ts">
   import { page } from "$app/stores";
   import Logo from "$lib/nav/Logo.svelte";
-  export let categories: any = [];
 
   import { tick } from "svelte";
   import { clickOutside } from "$lib/actions/clickOutside";
+
+  export let pages: Array<{
+    title: string;
+    slug: { current: string };
+    _id: string;
+  }> = [];
 
   let query = "";
   let showSearch = false;
@@ -102,13 +107,20 @@
         class={$page.url.pathname.startsWith("/issues") ? "active" : ""}
         href="/issues">Issues</a
       >
-      <a class={$page.url.pathname === "/about" ? "active" : ""} href="/about"
-        >About</a
-      >
       <a
-        class={$page.url.pathname === "/submissions" ? "active" : ""}
-        href="/submissions">Submissions</a
+        class={$page.url.pathname.startsWith("/contributors") ? "active" : ""}
+        href="/contributors">Contributors</a
       >
+      {#each pages as pageItem (pageItem._id)}
+        <a
+          class={$page.url.pathname === `/${pageItem.slug.current}`
+            ? "active"
+            : ""}
+          href={`/${pageItem.slug.current}`}
+        >
+          {pageItem.title}
+        </a>
+      {/each}
     </nav>
   </div>
 </header>

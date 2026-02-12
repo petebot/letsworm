@@ -8,6 +8,7 @@
   export let data;
 
   let categories = data.data;
+  let pages = data.pages ?? [];
 
   $: useFly = false;
   $: flyDirection = "";
@@ -23,7 +24,7 @@
   <meta name="theme-color" content="#ffffff" />
 </svelte:head>
 
-<Header {categories}></Header>
+<Header {pages}></Header>
 
 <div class="app">
   <main>
