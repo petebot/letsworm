@@ -2,7 +2,7 @@
   import IssueHero from "$lib/display/IssueHero.svelte";
   import StoryHero from "$lib/display/StoryHero.svelte";
   import type { Post } from "$lib/data/posts";
-  import { urlFor } from "../sanity";
+  import { getByline } from "$lib/helpers/formatByline";
 
   type Issue = {
     title?: string;
@@ -16,7 +16,6 @@
   export let data: { data?: Post[]; issue?: Issue };
 
   let issue: Issue | undefined;
-  let issueImage: string | null = null;
   let posts: Post[] = [];
   let featured: Post | undefined;
   let supporting: Post[] = [];
@@ -43,19 +42,7 @@
     });
   };
 
-  const getByline = (item: Post): string | undefined => {
-    const writer = item.author ?? undefined;
-    const illustrator = item.illustrator ?? undefined;
-    if (writer && illustrator) return `${writer} & ${illustrator}`;
-    return writer ?? illustrator ?? item.author ?? undefined;
-  };
-
   $: issue = data.issue as Issue | undefined;
-  $: issueImage = issue?.heroImage
-    ? urlFor(issue.heroImage as any)
-        .width(1600)
-        .url()
-    : null;
   import { normalizeIssueNumber } from "$lib/helpers/formatIssueNumber";
   $: issueNumber = normalizeIssueNumber(issue?.issueNumber);
   $: issueHref = issue?.slug?.current
@@ -85,7 +72,6 @@
   <IssueHero
     title={issue.title}
     number={issueNumber}
-    issueImageUrl={issueImage}
     href={issueHref}
     link={false}
   />
@@ -102,11 +88,13 @@
     {#each posts as item (item.slug?.current ?? "")}
       <StoryHero
         title={item.title}
-        byline={getByline(item)}
+        byline={getByline({
+          author: item.author,
+          illustrator: item.illustrator,
+          promptedByRole: item.promptedBy,
+        })}
         excerpt={item.excerpt}
-        coverUrl={item?.mainImage
-          ? urlFor(item.mainImage).width(1600).url()
-          : null}
+        coverImage={item?.mainImage ?? null}
         href={item?.slug?.current ? `/${item.slug.current}` : null}
         link={true}
       />

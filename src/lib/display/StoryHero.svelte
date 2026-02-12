@@ -1,8 +1,11 @@
 <script lang="ts">
+  import WormWiggler from "./WormWiggler.svelte";
+  import { urlFor } from "../../sanity";
   // StoryHero: large visual hero for individual stories or story previews
   export let title: string = "Untitled";
   export let byline: string | null = null;
   export let excerpt: string | null = null;
+  export let coverImage: Record<string, unknown> | null = null;
   export let coverUrl: string | null = null;
   export let href: string | null = null;
   export let link: boolean | string = true;
@@ -11,11 +14,33 @@
   export let height: string = "min(48vh, 35rem)";
   // allow tuning the focal point of the cover
   export let coverPosition: string = "center center";
+
+  const getHotspotPosition = (
+    image: Record<string, unknown> | null | undefined,
+  ): string | null => {
+    if (!image || typeof image !== "object") return null;
+    const hotspot = (image as { hotspot?: { x?: number; y?: number } }).hotspot;
+    if (
+      !hotspot ||
+      typeof hotspot.x !== "number" ||
+      typeof hotspot.y !== "number"
+    ) {
+      return null;
+    }
+    const x = Math.round(hotspot.x * 100);
+    const y = Math.round(hotspot.y * 100);
+    return `${x}% ${y}%`;
+  };
+
+  $: resolvedCoverUrl = coverImage
+    ? urlFor(coverImage).width(2000).auto("format").url()
+    : coverUrl;
+  $: resolvedCoverPosition = getHotspotPosition(coverImage) ?? coverPosition;
 </script>
 
 <section
   class="story-hero"
-  style={`--height:${height}; ${coverUrl ? `--cover:url('${coverUrl}');` : ""} --cover-position: ${coverPosition}`}
+  style={`--height:${height}; ${resolvedCoverUrl ? `--cover:url('${resolvedCoverUrl}');` : ""} --cover-position: ${resolvedCoverPosition}`}
 >
   <svelte:element
     this={tag}
@@ -38,6 +63,11 @@
       {/if}
     </div>
   </svelte:element>
+  {#if tag === "a"}
+    <div class="show-wiggler">
+      <WormWiggler />
+    </div>
+  {/if}
 </section>
 
 <style>
@@ -89,6 +119,22 @@
   }
   .story-hero:hover .hero-link .cover {
     transform: scale(1.05);
+  }
+
+  .show-wiggler {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease-in;
+    bottom: 3rem;
+    right: 3rem;
+    width: 18rem;
+    height: 5rem;
+  }
+  .story-hero:hover .show-wiggler {
+    opacity: 1;
+    pointer-events: auto;
+    transition: all 1.3s ease-out;
   }
 
   .cover::after {

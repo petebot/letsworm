@@ -5,6 +5,7 @@
   import { urlFor } from "../../sanity";
   import { PortableText } from "@portabletext/svelte";
   import InlineImage from "$lib/display/InlineImage.svelte";
+  import { getBylinePartsWithLabels } from "$lib/helpers/formatByline";
 
   export let data: any;
 
@@ -13,6 +14,12 @@
   let suitePosts: any[] = [];
   let previousPost: { slug: { current: any }; title: any } | null = null;
   let nextPost: { slug: { current: any }; title: any } | null = null;
+
+  $: bylineParts = getBylinePartsWithLabels({
+    author: worm?.author,
+    illustrator: worm?.illustrator,
+    promptedByRole: worm?.promptedBy,
+  });
 
   function formatDate(dateString: string): string {
     const options = { year: "numeric", month: "long", day: "numeric" } as const;
@@ -31,12 +38,12 @@
     if (suitePosts && suitePosts.length > 0 && worm && worm.publishedAt) {
       suitePosts.sort(
         (a, b) =>
-          new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+          new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
       );
       const currentIndex = suitePosts.findIndex(
         (post) =>
           new Date(post.publishedAt).getTime() ===
-          new Date(worm.publishedAt).getTime()
+          new Date(worm.publishedAt).getTime(),
       );
       if (currentIndex !== -1) {
         previousPost = suitePosts[currentIndex - 1] || null;
@@ -59,12 +66,9 @@
       {#if worm.publishedAt}
         <p>{formatDate(worm.publishedAt)}</p>
       {/if}
-      {#if worm.author}
-        <p>Written by {worm.author}</p>
-      {/if}
-      {#if worm.illustrator}
-        <p>Illustrated by {worm.illustrator}</p>
-      {/if}
+      {#each bylineParts as part}
+        <p>{part.label} {part.name}</p>
+      {/each}
       {#if worm.categories}
         {#each worm.categories as category}
           <p>{category.title}</p>

@@ -1,24 +1,11 @@
 <script lang="ts">
   import IssueHero from "$lib/display/IssueHero.svelte";
   import StoryHero from "$lib/display/StoryHero.svelte";
-  import { urlFor } from "../../../sanity";
   import { normalizeIssueNumber } from "$lib/helpers/formatIssueNumber";
+  import { getByline } from "$lib/helpers/formatByline";
 
   export let data: { issue?: any };
   const issue = data?.issue ?? null;
-
-  const issueImage = issue?.heroImage
-    ? urlFor(issue.heroImage as any)
-        .width(1600)
-        .url()
-    : null;
-
-  const getByline = (item: any): string | undefined => {
-    const writer = item.writer ?? undefined;
-    const illustrator = item.illustrator ?? undefined;
-    if (writer && illustrator) return `${writer} & ${illustrator}`;
-    return writer ?? illustrator ?? item.author ?? undefined;
-  };
 </script>
 
 <svelte:head>
@@ -30,7 +17,6 @@
   <IssueHero
     title={issue.title}
     number={normalizeIssueNumber(issue.issueNumber)}
-    issueImageUrl={issueImage}
     href={null}
     link={false}
   />
@@ -40,11 +26,13 @@
       {#each issue.stories as item (item.slug?.current ?? item.title)}
         <StoryHero
           title={item.title}
-          byline={getByline(item)}
+          byline={getByline({
+            author: item.author,
+            illustrator: item.illustrator,
+            promptedByRole: item.promptedBy,
+          })}
           excerpt={item.excerpt}
-          coverUrl={item?.mainImage
-            ? urlFor(item.mainImage).width(1600).url()
-            : null}
+          coverImage={item?.mainImage ?? null}
           href={item?.slug?.current ? `/${item.slug.current}` : null}
           link={true}
         />

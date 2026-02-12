@@ -15,7 +15,7 @@ export const load: PageLoad = async ({ params }) => {
 
   if (!categoryData) {
     console.error(`Category data not found for slug: ${category}`);
-    return { data: { posts: [], categoryTitle: '', storyCycles: [], category: '' } };
+    return { data: { posts: [], categoryTitle: '', category: '' } };
   }
 
   // Fetch posts for the specific category
@@ -26,13 +26,8 @@ export const load: PageLoad = async ({ params }) => {
       publishedAt,
       excerpt,
       slug,
-      "author": author->name,
+      "author": coalesce(author->name, author->givenName + " " + select(defined(author->middleName) => author->middleName + " ", "") + author->familyName),
       "categories": categories[]->{
-        _id,
-        title,
-        slug
-      },
-      "storyCycleName": storyCycleName[]->{
         _id,
         title,
         slug
@@ -40,29 +35,10 @@ export const load: PageLoad = async ({ params }) => {
     }
   `, { categoryId: categoryData._id });
 
-  let storyCycles: any[] = [];
-  if (category === 'story-cycles') {
-    const groupedPosts: Record<string, any[]> = posts.reduce((grouped: Record<string, any[]>, post: any) => {
-      const key: string | undefined = post.storyCycleName[0]?.title;
-      if (key) {
-      if (!grouped[key]) {
-        grouped[key] = [];
-      }
-      if (!grouped[key].some((p: any) => p.title === post.title)) {
-        grouped[key].push(post);
-      }
-      }
-      return grouped;
-    }, {});
-
-    storyCycles = Object.values(groupedPosts).flat();
-  }
-
   return {
     data: {
       posts,
       categoryTitle: categoryData.title,
-      storyCycles,
       category
     }
   };

@@ -6,23 +6,17 @@ const LATEST_ISSUE_QUERY = `*[_type == "issue" && published == true] | order(iss
   issueNumber,
   slug,
   publishedAt,
-  heroImage,
   "stories": stories[]->{
     title,
     mainImage,
     publishedAt,
     excerpt,
     slug,
-    "author": author->name,
-    "writer": writer->name,
-    "illustrator": illustrator->name,
+    promptedBy,
+    "author": coalesce(author->name, author->givenName + " " + select(defined(author->middleName) => author->middleName + " ", "") + author->familyName),
+    "writer": coalesce(writer->name, writer->givenName + " " + select(defined(writer->middleName) => writer->middleName + " ", "") + writer->familyName),
+    "illustrator": coalesce(illustrator->name, illustrator->givenName + " " + select(defined(illustrator->middleName) => illustrator->middleName + " ", "") + illustrator->familyName),
     "categories": categories[]->{
-      _id,
-      title,
-      slug,
-      description
-    },
-    "storyCycleName": storyCycleName[]->{
       _id,
       title,
       slug,

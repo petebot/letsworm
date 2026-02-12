@@ -1,7 +1,6 @@
-import type { PageServerLoad } from './$types';
 import client from '../../../../sanity';
 
-export const load: PageServerLoad = async ({ params }) => {
+export const load = async ({ params }: { params: any }) => {
   const { slug, issue } = params;
 
   // Fetch the current post data
@@ -11,14 +10,14 @@ export const load: PageServerLoad = async ({ params }) => {
       _id,
       title,
       mainImage,
-      "author": author->name,
-      "illustrator": illustrator->name,
+      promptedBy,
+      "author": coalesce(author->name, author->givenName + " " + select(defined(author->middleName) => author->middleName + " ", "") + author->familyName),
+      "illustrator": coalesce(illustrator->name, illustrator->givenName + " " + select(defined(illustrator->middleName) => illustrator->middleName + " ", "") + illustrator->familyName),
       publishedAt,
       body,
       excerpt,
-      "writer": writer->name,
+      "writer": coalesce(writer->name, writer->givenName + " " + select(defined(writer->middleName) => writer->middleName + " ", "") + writer->familyName),
       "categories": categories[]->{_id, title, slug},
-      "storyCycleName": storyCycleName[]->{_id, title, slug},
       slug
     }
   `,
@@ -39,25 +38,12 @@ export const load: PageServerLoad = async ({ params }) => {
       publishedAt,
       excerpt,
       slug,
-      "author": author->name,
-      "categories": categories[]->{_id, title, slug},
-      "storyCycleName": storyCycleName[]->{_id, title, slug}
+      "author": coalesce(author->name, author->givenName + " " + select(defined(author->middleName) => author->middleName + " ", "") + author->familyName),
+      "categories": categories[]->{_id, title, slug}
     }
   `,
     { slug, categoryIds }
   );
-
-  // Fetch suite posts (story cycle)
-  let suitePosts: any[] = [];
-  if (post?.storyCycleName) {
-    const suiteSlug = post.storyCycleName[0]?.slug?.current;
-    if (suiteSlug) {
-      suitePosts = await client.fetch(
-        `*[_type == "post" && storyCycleName[0]->slug.current == $suiteSlug] | order(publishedAt asc){ title, mainImage, publishedAt, slug, "author": author->name, "categories": categories[]->{_id,title,slug}, "storyCycleName": storyCycleName[]->{_id,title,slug} }`,
-        { suiteSlug }
-      );
-    }
-  }
 
   // Fetch issue metadata (if present) by slug or issueNumber
   const issueData = await client.fetch(
@@ -65,5 +51,5 @@ export const load: PageServerLoad = async ({ params }) => {
     { issue }
   );
 
-  return { data: { post, relatedPosts, suitePosts, issue: issueData } };
+  return { data: { post, relatedPosts, suitePosts: [], issue: issueData } };
 };
