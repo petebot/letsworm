@@ -67,8 +67,8 @@
     overflow: hidden;
     background-color: var(--color-bg-primary, #3b2b10);
     color: var(--color-text, #fff);
-    --worm-color-a: var(--color-primary);
-    --worm-color-b: var(--color-primary-tint-50);
+    --worm-color-a: var(--color-mauve-dark);
+    --worm-color-b: var(--color-mauve);
     --worm-stroke: var(--color-black);
   }
 

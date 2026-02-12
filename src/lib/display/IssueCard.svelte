@@ -46,14 +46,14 @@
     display: grid;
     align-items: center;
     justify-items: center;
-    min-height: 15rem;
+    min-height: 16rem;
     padding: 1.25rem;
     background: var(--color-bg-emphasis);
     color: var(--color-text);
     overflow: hidden;
     border: 1px solid var(--color-border);
-    --worm-color-a: var(--color-primary);
-    --worm-color-b: var(--color-primary-tint-50);
+    --worm-color-a: var(--color-mauve-dark);
+    --worm-color-b: var(--color-mauve);
     --worm-stroke: var(--color-black);
   }
 
