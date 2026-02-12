@@ -30,7 +30,7 @@
 <style>
   .site-footer {
     border-top: 1px solid color-mix(in srgb, var(--color-text) 8%, transparent);
-    background: var(--color-bg-footer);
+    background: var(--color-bg-emphasis);
     padding: 2rem 1rem;
     color: var(--color-text);
   }

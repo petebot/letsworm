@@ -1,8 +1,9 @@
 <script lang="ts">
+  import WormCanvas from "$lib/display/WormCanvas.svelte";
+
   export let title: string = "Untitled Issue";
   export let number: number | string = "";
   export let subtitle: string = "";
-  export let issueImageUrl: string | null = null;
   // `href` can be empty to render a non-link hero (useful on index pages)
   export let href: string | null = null;
   // allow explicitly disabling linking even when `href` is provided
@@ -19,7 +20,7 @@
 
 <section
   class="issue-hero"
-  style={`--height:${height}; --issue-image-size:${issueImageSize}; --issue-image-position:${issueImagePosition}; ${issueImageUrl ? `--issue-image: url('${issueImageUrl}')` : ``}`}
+  style={`--height:${height}; --issue-image-size:${issueImageSize}; --issue-image-position:${issueImagePosition};`}
 >
   <svelte:element
     this={tag}
@@ -29,8 +30,14 @@
     aria-label={tag === "div" ? title : undefined}
   >
     <div class="issue-image" aria-hidden="true">
-      {#if issueImageUrl}
-        <img src={issueImageUrl} alt="" class="issue-img" />
+      {#if number !== ""}
+        <WormCanvas
+          {number}
+          targetHeight={420}
+          minDisplayWidth={0}
+          useCssVars={true}
+          thickness={50}
+        />
       {/if}
     </div>
 
@@ -60,6 +67,9 @@
     overflow: hidden;
     background-color: var(--color-bg-primary, #3b2b10);
     color: var(--color-text, #fff);
+    --worm-color-a: var(--color-primary);
+    --worm-color-b: var(--color-primary-tint-50);
+    --worm-stroke: var(--color-black);
   }
 
   .hero-link,
@@ -78,25 +88,6 @@
     justify-content: center;
     pointer-events: none;
     overflow: hidden;
-  }
-
-  .issue-img {
-    /* width is viewport-relative but clamped to a sensible max so it doesn't explode on large screens */
-    width: min(var(--issue-image-size, 45vw), 250px);
-    height: auto;
-    object-fit: contain;
-    transform: translateZ(0);
-    pointer-events: none;
-    user-select: none;
-    display: block;
-    margin: 0 auto;
-  }
-
-  @media (min-width: 1400px) {
-    .issue-img {
-      /* slightly smaller cap on very large screens */
-      width: min(var(--issue-image-size, 45vw), 360px);
-    }
   }
 
   .issue-image::after {

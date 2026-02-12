@@ -105,9 +105,12 @@
 	/* Colors - Backgrounds */
 	--color-bg-primary: var(--color-white);
 	--color-bg-hero: var(--color-white-shade-10);
-	--color-bg-footer: var(--color-white-shade-10);
+	--color-bg-emphasis: var(--color-white-shade-10);
 	--color-bg-overlay: rgba(0, 0, 0, 0.6);
 	--base-background-color: var(--color-white);
+
+	/* Colors - Borders */
+	--color-border: var(--color-white-shade-20);
 
 	/* alias used by components that expect a `--color-background` token */
 	--color-background: var(--base-background-color);
@@ -161,7 +164,7 @@
 	--color-bg-primary: var(--color-black);
 	--color-bg-hero: var(--color-white);
 	/* darker footer background computed from precomputed dark black */
-	--color-bg-footer: color-mix(in srgb, var(--pureblack) 10%, var(--color-black-dark));
+	--color-bg-emphasis: color-mix(in srgb, var(--pureblack) 10%, var(--color-black-dark));
 	--base-background-color: var(--color-black);
 
 	/* make `--color-background` available for components using that token */
@@ -185,7 +188,7 @@
 		--color-bg-primary: var(--color-bg-black);
 		--color-bg-hero: var(--color-black-shade-10);
 		/* compute a darker footer tint on top of the dark background token */
-		--color-bg-footer: color-mix(in srgb, var(--pureblack) 10%, var(--color-bg-black));
+		--color-bg-emphasis: color-mix(in srgb, var(--pureblack) 10%, var(--color-bg-black));
 		--base-background-color: var(--color-bg-black);
 
 		/* make `--color-background` available for components using that token */

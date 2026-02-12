@@ -31,7 +31,7 @@
     position: fixed;
     right: 3.5rem;
     bottom: 1.5rem;
-    background: var(--color-bg-footer);
+    background: var(--color-bg-emphasis);
     color: var(--color-text-subtle);
     border: none;
     border-radius: 999px;

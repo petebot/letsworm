@@ -1,6 +1,5 @@
 <script lang="ts">
-  import IssueHero from "$lib/display/IssueHero.svelte";
-  import { urlFor } from "../../sanity";
+  import IssueCard from "$lib/display/IssueCard.svelte";
   import { normalizeIssueNumber } from "$lib/helpers/formatIssueNumber";
 
   export let data: { issues?: Array<any> };
@@ -17,14 +16,11 @@
     <p>No issues available.</p>
   </section>
 {:else}
-  <div class="issues-archive">
+  <div class="issues-grid">
     {#each issues as issue (issue.slug?.current ?? issue.issueNumber ?? issue.title)}
-      <IssueHero
+      <IssueCard
         title={issue.title}
         number={normalizeIssueNumber(issue.issueNumber)}
-        issueImageUrl={issue.heroImage
-          ? urlFor(issue.heroImage).width(1200).url()
-          : null}
         href={issue.slug?.current ? `/issues/${issue.slug.current}` : `/issues`}
         link={true}
       />
@@ -37,12 +33,13 @@
     margin: 4rem 0;
     text-align: center;
   }
-  .issues-archive {
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
-    margin: 2.5rem auto;
-    width: 100%;
-    max-width: 64rem;
+  .issues-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.75rem;
+    margin: 2.5rem auto 4rem;
+    width: min(100%, 72rem);
+    padding: 0 1.5rem;
+    box-sizing: border-box;
   }
 </style>
