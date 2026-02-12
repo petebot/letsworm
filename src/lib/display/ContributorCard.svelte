@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { urlFor } from "../../sanity";
   import {
     formatContributorName,
-    getContributorInitials,
     type ContributorName,
   } from "$lib/helpers/formatContributorName";
+  import Avatar from "./Avatar.svelte";
 
   export let contributor:
     | (ContributorName & {
@@ -38,7 +37,6 @@
   };
 
   $: name = formatContributorName(contributor);
-  $: initials = getContributorInitials(contributor);
   $: roles = contributor?.roles ?? [];
   $: hasStoryCount =
     contributor?.storyCount !== undefined && contributor?.storyCount !== null;
@@ -52,6 +50,13 @@
   $: defaultStatsText = `${storyCount} ${storyCount === 1 ? "story" : "stories"}`;
   $: resolvedStatsText = statsText ?? defaultStatsText;
   $: resolvedEyebrow = eyebrow ?? computeEyebrow(roles);
+  $: avatarSize = (
+    resolvedVariant === "hero"
+      ? "large"
+      : resolvedVariant === "compact"
+        ? "small"
+        : "default"
+  ) as "small" | "default" | "large";
 </script>
 
 <svelte:element
@@ -60,16 +65,7 @@
   class={`contributor-card ${resolvedVariant}`}
   aria-label={name}
 >
-  <div class="avatar">
-    {#if contributor?.image}
-      <img
-        src={urlFor(contributor.image).width(240).height(240).url()}
-        alt={name}
-      />
-    {:else}
-      <span class="initials" aria-hidden="true">{initials}</span>
-    {/if}
-  </div>
+  <Avatar {contributor} alt={name} size={avatarSize} />
 
   <div class="meta">
     {#if resolvedEyebrow}
@@ -125,51 +121,6 @@
     );
   }
 
-  .avatar {
-    width: 72px;
-    height: 72px;
-    border-radius: 20px;
-    overflow: hidden;
-    background: linear-gradient(
-      135deg,
-      var(--color-primary-tint-20),
-      var(--color-primary-tint-50)
-    );
-    display: grid;
-    place-items: center;
-    border: 1px solid color-mix(in srgb, var(--color-black) 10%, transparent);
-  }
-
-  .contributor-card.compact .avatar {
-    width: 56px;
-    height: 56px;
-    border-radius: 16px;
-  }
-
-  .contributor-card.hero .avatar {
-    width: 180px;
-    height: 180px;
-    border-radius: 24px;
-  }
-
-  .avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .initials {
-    font-family: var(--font-head);
-    font-weight: 700;
-    font-size: 1.4rem;
-    color: var(--color-black);
-    text-transform: uppercase;
-  }
-
-  .contributor-card.hero .initials {
-    font-size: 3rem;
-  }
-
   .meta {
     display: flex;
     flex-direction: column;
@@ -194,26 +145,6 @@
     text-transform: uppercase;
     letter-spacing: 0.3em;
     font-size: 0.75rem;
-  }
-
-  .roles {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-
-  .role {
-    padding: 0.2rem 0.5rem;
-    border-radius: 999px;
-    background: var(--color-primary-a20);
-    font-size: 0.75rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .contributor-card.hero .role {
-    padding: 0.25rem 0.6rem;
-    letter-spacing: 0.1em;
   }
 
   .stats {
