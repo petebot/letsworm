@@ -5,6 +5,7 @@
 
 # Dependencies
 /node_modules
+node_modules/
 /.pnp
 .pnp.js
 
@@ -29,3 +30,6 @@
 *.local
 src/lib/.DS_Store
 .svelte-kit/
+
+# vercel
+.vercel/

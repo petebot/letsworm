@@ -1,11 +1,11 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
-  let visible = false;
   const threshold = 320;
 
   // `scrollY` is bound to the window scroll position via <svelte:window bind:scrollY />
-  let scrollY = 0;
-
-  $: visible = scrollY > threshold;
+  let scrollY = $state(0);
+  let visible = $derived(scrollY > threshold);
 
   function scrollToTop() {
     if (typeof window === "undefined") return;

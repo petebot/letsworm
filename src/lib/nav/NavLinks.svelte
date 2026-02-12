@@ -1,12 +1,16 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
   import { page } from "$app/stores";
   import WormUnderline from "$lib/display/WormUnderline.svelte";
 
-  export let pages: Array<{
-    title: string;
-    slug: { current: string };
-    _id: string;
-  }> = [];
+  let { pages = [] }: {
+    pages?: Array<{
+      title: string;
+      slug: { current: string };
+      _id: string;
+    }>;
+  } = $props();
 </script>
 
 <a class={$page.url.pathname === "/" ? "active" : ""} href="/">

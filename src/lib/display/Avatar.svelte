@@ -1,3 +1,5 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
   import { urlFor } from "../../sanity";
   import {
@@ -5,16 +7,21 @@
     type ContributorName,
   } from "$lib/helpers/formatContributorName";
 
-  export let contributor:
-    | (ContributorName & {
-        image?: Record<string, unknown> | null;
-      })
-    | null = null;
-  export let alt: string = "";
-  export let size: "small" | "default" | "large" = "default";
-  export let hideInitials: boolean = false;
+  let {
+    contributor = null,
+    alt = "",
+    size = "default",
+    hideInitials = false
+  }: {
+    contributor?: (ContributorName & {
+      image?: Record<string, unknown> | null;
+    }) | null;
+    alt?: string;
+    size?: "small" | "default" | "large";
+    hideInitials?: boolean;
+  } = $props();
 
-  $: initials = hideInitials ? "" : getContributorInitials(contributor);
+  let initials = $derived(hideInitials ? "" : getContributorInitials(contributor));
 </script>
 
 <div

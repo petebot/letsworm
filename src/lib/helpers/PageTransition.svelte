@@ -1,35 +1,27 @@
+<svelte:options runes={true} />
+
 <script lang="ts">
   import { blur, fly } from "svelte/transition";
-  import { onDestroy } from "svelte";
+  import { get } from "svelte/store";
   import { navigationStore } from "$lib/store.js";
 
-  export let inDelay = 200;
-  export let inDuration = 200;
-  export let outDuration = 200;
+  let { inDelay = 200, inDuration = 200, outDuration = 200, pathname = "" } = $props();
 
-  export let pathname = "";
-
-  let useFly = false;
-  let flyDirection = "next"; // 'next' or 'prev'
-
-  let unsubscribe: any;
-
-  $: {
-    unsubscribe && unsubscribe();
-    unsubscribe = navigationStore.subscribe((value) => {
-      useFly = value.useFly;
-      flyDirection = value.flyDirection;
+  let navState = $state(get(navigationStore));
+  
+  // Subscribe to navigation store
+  $effect(() => {
+    const unsubscribe = navigationStore.subscribe((value) => {
+      navState = value;
     });
-  }
+    return unsubscribe;
+  });
 
-  onDestroy(() => unsubscribe && unsubscribe());
-  let inFlyX: number;
-  let outFlyX: number;
+  let useFly = $derived(navState.useFly);
+  let flyDirection = $derived(navState.flyDirection);
 
-  $: if (useFly) {
-    inFlyX = flyDirection === "next" ? -200 : 200;
-    outFlyX = flyDirection === "next" ? 200 : -200;
-  }
+  let inFlyX = $derived(useFly ? (flyDirection === "next" ? -200 : 200) : 0);
+  let outFlyX = $derived(useFly ? (flyDirection === "next" ? 200 : -200) : 0);
 
   // Add offset to avoid scroll to top before transition.
   function offsetFade(
@@ -88,7 +80,7 @@
   }
 
   /* Ensure the immediate child (the slotted page) can use full width */
-  .transition-wrap > * {
+  .transition-wrap :global(> *) {
     width: 100%;
     min-width: 0;
   }
