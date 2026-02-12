@@ -33,7 +33,7 @@
   </main>
 </div>
 
-<Footer />
+<Footer {pages} />
 
 <BackToTop />
 

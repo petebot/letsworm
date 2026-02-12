@@ -1,6 +1,13 @@
 <script lang="ts">
   import Logo from "$lib/nav/Logo.svelte";
-  // Simple footer component
+  import NavLinks from "$lib/nav/NavLinks.svelte";
+
+  export let pages: Array<{
+    title: string;
+    slug: { current: string };
+    _id: string;
+  }> = [];
+
   const year = new Date().getFullYear();
 </script>
 
@@ -15,10 +22,7 @@
           fill="var(--color-primary)"
         />
       </div>
-      <a href="/">Home</a>
-      <a href="/issues">Issues</a>
-      <a href="/pages/about">About</a>
-      <a href="/pages/submissions">Submissions</a>
+      <NavLinks {pages} />
     </nav>
 
     <div class="meta">
@@ -53,17 +57,6 @@
   .logo-wrap {
     display: inline-block;
     margin-right: 0.75rem;
-  }
-
-  .links a {
-    color: var(--color-primary);
-    text-decoration: none;
-    font-family: Georgia, "Times New Roman", serif;
-  }
-
-  .links a:hover {
-    color: var(--color-text);
-    text-decoration: underline;
   }
 
   .meta small {
