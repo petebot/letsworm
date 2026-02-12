@@ -1,15 +1,18 @@
 <script lang="ts">
   import { PortableText } from "@portabletext/svelte";
   import InlineImage from "$lib/display/InlineImage.svelte";
-  import { urlFor } from "../../sanity";
+  import { urlFor } from "../../../sanity";
 
   export let data: { page?: any };
   const page = data?.page ?? null;
 </script>
 
 <svelte:head>
-  <title>{page?.title ?? "About"} — Let's Worm</title>
-  <meta name="description" content={page?.title ?? "About Let's Worm"} />
+  <title>{page?.title ?? "Page"} — Let's Worm</title>
+  <meta
+    name="description"
+    content={page?.title ? `${page.title} — Let's Worm` : "Let's Worm"}
+  />
 </svelte:head>
 
 {#if page}

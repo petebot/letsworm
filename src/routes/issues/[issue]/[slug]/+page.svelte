@@ -59,11 +59,11 @@
       {#if issue}
         <p>From Issue Nº {normalizeIssueNumber(issue.issueNumber)}</p>
       {/if}
-      {#if post.categories}
+      <!-- {#if post.categories}
         {#each post.categories as category}
           <p>{category.title}</p>
         {/each}
-      {/if}
+      {/if} -->
     </div>
 
     {#if post.body}

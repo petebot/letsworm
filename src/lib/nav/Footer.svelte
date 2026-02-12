@@ -17,8 +17,8 @@
       </div>
       <a href="/">Home</a>
       <a href="/issues">Issues</a>
-      <a href="/about">About</a>
-      <a href="/submissions">Submissions</a>
+      <a href="/pages/about">About</a>
+      <a href="/pages/submissions">Submissions</a>
     </nav>
 
     <div class="meta">

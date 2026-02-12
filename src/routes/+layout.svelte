@@ -7,7 +7,6 @@
 
   export let data;
 
-  let categories = data.data;
   let pages = data.pages ?? [];
 
   $: useFly = false;

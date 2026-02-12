@@ -113,10 +113,10 @@
       >
       {#each pages as pageItem (pageItem._id)}
         <a
-          class={$page.url.pathname === `/${pageItem.slug.current}`
+          class={$page.url.pathname === `/pages/${pageItem.slug.current}`
             ? "active"
             : ""}
-          href={`/${pageItem.slug.current}`}
+          href={`/pages/${pageItem.slug.current}`}
         >
           {pageItem.title}
         </a>
