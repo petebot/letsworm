@@ -8,6 +8,7 @@
   export let data;
 
   let pages = data.pages ?? [];
+  $: pages = data.pages ?? [];
 
   $: useFly = false;
   $: flyDirection = "";
