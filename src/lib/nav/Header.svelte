@@ -64,6 +64,11 @@
     mobileSearchInput?.focus();
   };
 
+  const handleMobileSearchSubmit = () => {
+    if (!menuOpen) return;
+    closeMenu();
+  };
+
   $: if (browser) {
     document.documentElement.classList.toggle("mobile-menu-open", menuOpen);
   }
@@ -135,7 +140,12 @@
         </button>
       </div>
 
-      <form class="mobile-search" method="get" action="/search">
+      <form
+        class="mobile-search"
+        method="get"
+        action="/search"
+        on:submit={handleMobileSearchSubmit}
+      >
         <label class="sr-only" for="mobile-search-input">Search</label>
         <input
           id="mobile-search-input"
