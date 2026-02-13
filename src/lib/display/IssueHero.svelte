@@ -1,0 +1,158 @@
+<script lang="ts">
+  import WormCanvas from "$lib/display/WormCanvas.svelte";
+
+  export let title: string = "Untitled Issue";
+  export let number: number | string = "";
+  export let subtitle: string = "";
+  // `href` can be empty to render a non-link hero (useful on index pages)
+  export let href: string | null = null;
+  // allow explicitly disabling linking even when `href` is provided
+  // support boolean or boolean-like string values from markup (e.g. link="false")
+  export let link: boolean | string = true;
+  $: normalizedLink = link === true || link === "true";
+  $: tag = href && normalizedLink ? "a" : "div";
+  export let height: string = "min(72vh, 720px)";
+  // control the visual size and position of the issue image
+  // default uses viewport-relative sizing but is capped in CSS to avoid overscaling
+  export let issueImageSize: string = "45vw";
+  export let issueImagePosition: string = "center center";
+</script>
+
+<section
+  class="issue-hero"
+  style={`--height:${height}; --issue-image-size:${issueImageSize}; --issue-image-position:${issueImagePosition};`}
+>
+  <svelte:element
+    this={tag}
+    {...tag === "a" ? { href } : {}}
+    class={tag === "a" ? "hero-link" : "hero-plain"}
+    role={tag === "div" ? "region" : undefined}
+    aria-label={tag === "div" ? title : undefined}
+  >
+    <div class="issue-image" aria-hidden="true">
+      {#if number !== ""}
+        <WormCanvas
+          {number}
+          targetHeight={420}
+          minDisplayWidth={0}
+          useCssVars={true}
+          thickness={50}
+        />
+      {/if}
+    </div>
+
+    <div class="content">
+      <div class="title-wrap">
+        {#if number !== ""}
+          <div class="issue-number">ISSUE Nº {number}</div>
+        {/if}
+
+        <h1 class="issue-title">{title}</h1>
+      </div>
+
+      {#if subtitle}
+        <div class="issue-sub">{subtitle}</div>
+      {/if}
+    </div>
+  </svelte:element>
+</section>
+
+<style>
+  .issue-hero {
+    position: relative;
+    height: var(--height);
+    min-height: 360px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background-color: var(--color-bg-primary, #3b2b10);
+    color: var(--color-text, #fff);
+    --worm-color-a: var(--color-mauve-dark);
+    --worm-color-b: var(--color-mauve);
+    --worm-stroke: var(--color-black);
+  }
+
+  .hero-link,
+  .hero-plain {
+    display: block;
+    width: 100%;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .issue-image {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .issue-image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+
+  .content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 2;
+    width: 100%;
+    max-width: 80rem;
+    padding: clamp(1rem, 4vw, 4rem);
+    box-sizing: border-box;
+    margin: 0 auto;
+  }
+
+  .title-wrap {
+    margin: 0 auto;
+    text-align: left;
+    display: block;
+    max-width: 100%;
+  }
+
+  .issue-number {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 1.25rem;
+    letter-spacing: 0.12em;
+    margin: 0 0 0.75rem 0;
+    color: var(--color-text);
+    text-shadow: 1px 1px 0 var(--base-background-color);
+  }
+
+  .issue-title {
+    margin: 0;
+    font-weight: 800;
+    line-height: 0.5;
+    font-size: clamp(2.25rem, 6vw, 7.5rem);
+    color: var(--color-text, #fff);
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    max-width: 52rem;
+    text-align: left;
+    text-shadow: 1px 1px 0 var(--base-background-color);
+  }
+
+  .issue-sub {
+    margin-top: 1rem;
+    color: var(--color-text-subtle, rgba(255, 255, 255, 0.9));
+    font-size: clamp(1rem, 2vw, 1.25rem);
+  }
+
+  @media (max-width: 640px) {
+    .issue-title {
+      font-size: clamp(1.75rem, 9vw, 3.8rem);
+    }
+    .content {
+      padding: 1.25rem;
+    }
+  }
+</style>

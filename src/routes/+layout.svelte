@@ -1,12 +1,14 @@
 <script lang="ts">
   import "./styles.css";
-  import Nav from "$lib/nav/Nav.svelte";
+  import Header from "$lib/nav/Header.svelte";
+  import Footer from "$lib/nav/Footer.svelte";
   import PageTransition from "$lib/helpers/PageTransition.svelte";
+  import BackToTop from "$lib/ui/BackToTop.svelte";
 
   export let data;
 
-  let categories = data.categories;
-  let navPages = data.navPages;
+  let pages = data.pages ?? [];
+  $: pages = data.pages ?? [];
 
   $: useFly = false;
   $: flyDirection = "";
@@ -22,7 +24,7 @@
   <meta name="theme-color" content="#ffffff" />
 </svelte:head>
 
-<Nav {categories} pages={navPages}></Nav>
+<Header {pages}></Header>
 
 <div class="app">
   <main>
@@ -31,6 +33,10 @@
     </PageTransition>
   </main>
 </div>
+
+<Footer {pages} />
+
+<BackToTop />
 
 <style>
   .app {
@@ -43,9 +49,9 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 1rem;
+    align-items: center;
+    padding: 0;
     width: 100%;
-    max-width: 64rem;
     margin: 0 auto;
     box-sizing: border-box;
   }

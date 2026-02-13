@@ -1,0 +1,87 @@
+/* Color System */
+
+:root {
+	/* Brand colors */
+	--color-primary: var(--color-mauve-dark);
+	--color-white: #F6EEE8;
+	--color-black: #4D3912;
+	--color-mauve-dark: #8C5061;
+	--color-mauve: #c88b9e;
+	--color-mauve-light: #d9a5b3;
+	--color-cream: #f5f1e8;
+	--pureblack: #000000;
+
+	/* Primary tints (mix with white) */
+	--color-primary-tint-10: color-mix(in srgb, var(--color-white) 10%, var(--color-primary));
+	--color-primary-tint-20: color-mix(in srgb, var(--color-white) 20%, var(--color-primary));
+	--color-primary-tint-30: color-mix(in srgb, var(--color-white) 30%, var(--color-primary));
+	--color-primary-tint-40: color-mix(in srgb, var(--color-white) 40%, var(--color-primary));
+	--color-primary-tint-50: color-mix(in srgb, var(--color-white) 50%, var(--color-primary));
+
+	/* Primary shades (mix with black) */
+	--color-primary-shade-10: color-mix(in srgb, black 10%, var(--color-primary));
+	--color-primary-shade-20: color-mix(in srgb, black 20%, var(--color-primary));
+	--color-primary-shade-30: color-mix(in srgb, black 30%, var(--color-primary));
+	--color-primary-shade-40: color-mix(in srgb, black 40%, var(--color-primary));
+	--color-primary-shade-50: color-mix(in srgb, black 50%, var(--color-primary));
+
+	/* Alpha helpers for primary (increments of 10%) */
+	--color-primary-a10: rgba(140, 80, 97, 0.1);
+	--color-primary-a20: rgba(140, 80, 97, 0.2);
+	--color-primary-a30: rgba(140, 80, 97, 0.3);
+	--color-primary-a40: rgba(140, 80, 97, 0.4);
+	--color-primary-a50: rgba(140, 80, 97, 0.5);
+	--color-primary-a60: rgba(140, 80, 97, 0.6);
+	--color-primary-a70: rgba(140, 80, 97, 0.7);
+	--color-primary-a80: rgba(140, 80, 97, 0.8);
+	--color-primary-a90: rgba(140, 80, 97, 0.9);
+	--color-primary-a100: rgba(140, 80, 97, 1);
+
+	/* Alpha helpers for brand black (based on --color-black #4D3912 -> rgb(77,57,18)) */
+	--color-black-a10: rgba(77,57,18,0.1);
+	--color-black-a20: rgba(77,57,18,0.2);
+	--color-black-a30: rgba(77,57,18,0.3);
+	--color-black-a40: rgba(77,57,18,0.4);
+	--color-black-a50: rgba(77,57,18,0.5);
+	--color-black-a60: rgba(77,57,18,0.6);
+	--color-black-a70: rgba(77,57,18,0.7);
+	--color-black-a80: rgba(77,57,18,0.8);
+	--color-black-a90: rgba(77,57,18,0.9);
+	--color-black-a100: rgba(77,57,18,1);
+
+	/* Alpha helpers for site white (based on --color-white #F6EEE8 -> rgb(246,238,232)) */
+	--color-white-a10: rgba(246,238,232,0.1);
+	--color-white-a20: rgba(246,238,232,0.2);
+	--color-white-a30: rgba(246,238,232,0.3);
+	--color-white-a40: rgba(246,238,232,0.4);
+	--color-white-a50: rgba(246,238,232,0.5);
+	--color-white-a60: rgba(246,238,232,0.6);
+	--color-white-a70: rgba(246,238,232,0.7);
+	--color-white-a80: rgba(246,238,232,0.8);
+	--color-white-a90: rgba(246,238,232,0.9);
+	--color-white-a100: rgba(246,238,232,1);
+
+	/* Black tints (mix black with site white to create lighter grays) */
+	--color-black-tint-10: color-mix(in srgb, var(--color-white) 10%, var(--color-black));
+	--color-black-tint-20: color-mix(in srgb, var(--color-white) 20%, var(--color-black));
+	--color-black-tint-30: color-mix(in srgb, var(--color-white) 30%, var(--color-black));
+	--color-black-tint-40: color-mix(in srgb, var(--color-white) 40%, var(--color-black));
+	--color-black-tint-50: color-mix(in srgb, var(--color-white) 50%, var(--color-black));
+
+	/* Black shades */
+	--color-black-shade-10: color-mix(in srgb, var(--pureblack) 10%, var(--color-black));
+	--color-black-shade-20: color-mix(in srgb, var(--pureblack) 20%, var(--color-black));
+	--color-black-shade-30: color-mix(in srgb, var(--pureblack) 30%, var(--color-black));
+	--color-black-shade-40: color-mix(in srgb, var(--pureblack) 40%, var(--color-black));
+	--color-black-shade-50: color-mix(in srgb, var(--pureblack) 50%, var(--color-black));
+
+	/* Precomputed darker black for dark-mode backgrounds */
+	--color-black-dark: color-mix(in srgb, var(--pureblack) 50%, var(--color-black));
+
+	/* White shades (mix site white with brand black to create subtle off-whites) */
+	--color-white-shade-10: color-mix(in srgb, var(--color-black) 10%, var(--color-white));
+	--color-white-shade-20: color-mix(in srgb, var(--color-black) 20%, var(--color-white));
+	--color-white-shade-30: color-mix(in srgb, var(--color-black) 30%, var(--color-white));
+	--color-white-shade-40: color-mix(in srgb, var(--color-black) 40%, var(--color-white));
+	--color-white-shade-50: color-mix(in srgb, var(--color-black) 50%, var(--color-white));
+}

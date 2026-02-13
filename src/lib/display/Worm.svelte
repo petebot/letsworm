@@ -9,7 +9,9 @@
 </script>
 
 <li>
-  {#if item.mainImage && item.mainImage.asset && item.slug.current && item.title}<a href="/{item.slug.current}">
+  {#if item.mainImage && item.mainImage.asset && item.slug.current && item.title}<a
+      href="/{item.slug.current}"
+    >
       <img
         src={urlFor(item.mainImage).width(512).height(288).url()}
         alt={item.title}
@@ -17,15 +19,6 @@
     </a>
     <h3><a href="/{item.slug.current}">{item.title}</a></h3>
   {/if}
-  <div class="metadata">
-    {#if item.categories}
-      {#each item.categories as category}
-        <p class="categories">
-          <a href={category.slug.current ? `/category/${category.slug.current}`: ''}>{category.title}</a>
-        </p>
-      {/each}
-    {/if}
-  </div>
   <div class="metadata">
     {#if item.publishedAt}
       <time datetime={item.publishedAt}>{formatDate(item.publishedAt)}</time>
@@ -68,9 +61,6 @@
   }
   li {
     list-style: none;
-  }
-  .metadata p {
-    margin: 0.25rem 0;
   }
 
   time {

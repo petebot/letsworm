@@ -1,23 +1,19 @@
 <script lang="ts">
   import { urlFor } from "../../sanity";
-  export let portableText: any;
+  export let portableText: { value?: Record<string, any> } = {};
 
-  console.log(portableText.value);
   let imageUrl = "";
   let alignment = "";
 
-  if (
-    portableText.value &&
-    portableText.value.asset &&
-    portableText.value.asset._ref
-  ) {
-    imageUrl = urlFor(portableText.value).url();
-    alignment = portableText.value.alignment || "left";
+  const block = portableText?.value;
+  if (block?.asset?._ref) {
+    imageUrl = urlFor(block).url();
+    alignment = block.alignment || "left";
   }
 </script>
 
 {#if imageUrl}
-  <img src={imageUrl} alt={portableText.value.alt || ""} class={alignment} />
+  <img src={imageUrl} alt={portableText?.value?.alt || ""} class={alignment} />
 {/if}
 
 <style>

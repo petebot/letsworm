@@ -5,6 +5,7 @@
 
 # Dependencies
 /node_modules
+node_modules/
 /.pnp
 .pnp.js
 
@@ -27,3 +28,8 @@
 
 # Dotenv and similar local-only files
 *.local
+src/lib/.DS_Store
+.svelte-kit/
+
+# vercel
+.vercel/

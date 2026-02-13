@@ -1,16 +1,10 @@
 <script lang="ts">
   import { PortableText } from "@portabletext/svelte";
   import { urlFor } from "../../../sanity";
-  export let data: any;
 
-  let page = data.data.page;
+  export let data: { page: Record<string, any> };
 
-  console.log("flat: ", page);
-
-  function formatDate(dateString: string): string {
-    const options = { year: "numeric", month: "long", day: "numeric" } as const;
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  }
+  const page = data.page;
 </script>
 
 <main>

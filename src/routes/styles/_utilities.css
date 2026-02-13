@@ -1,0 +1,60 @@
+/* Utility Classes */
+
+.visually-hidden {
+	border: 0;
+	clip: rect(0 0 0 0);
+	height: auto;
+	margin: 0;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+	white-space: nowrap;
+}
+
+.metadata {
+	text-transform: uppercase;
+	font-size: 0.75rem;
+	font-weight: 400;
+	letter-spacing: 0.1rem;
+	font-family: var(--font-head);
+	display: flex;
+	gap: 0 1rem;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.auto-grid {
+	padding: 0;
+}
+
+.auto-grid > * {
+	max-width: 16rem;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.auto-grid > * + * {
+	margin-top: 1rem;
+}
+
+.auto-grid li {
+	list-style: none;
+}
+
+@supports (display: grid) {
+	.auto-grid {
+		display: grid;
+		grid-template-columns: repeat(
+			auto-fill,
+			minmax(var(--auto-grid-min-size, 16rem), 1fr)
+		);
+		grid-gap: 1rem;
+	}
+
+	.auto-grid > * {
+		max-width: unset;
+		margin: unset;
+	}
+}

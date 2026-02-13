@@ -1,0 +1,86 @@
+/* Light & Dark Theme Overrides */
+
+:root {
+	/* Light theme (default) */
+	--color-text: var(--color-black);
+	--color-text-subtle: var(--color-black-tint-40);
+	--color-text-inverse: var(--color-white);
+	--color-text-accent: var(--color-primary);
+	--color-text-accent-hover: var(--color-primary-tint-20);
+
+	--color-bg-primary: var(--color-white);
+	--color-bg-hero: var(--color-white-shade-10);
+	--color-bg-emphasis: var(--color-white-shade-10);
+	--color-bg-overlay: rgba(0, 0, 0, 0.6);
+	--base-background-color: var(--color-white);
+	--color-border: var(--color-white-shade-20);
+	--color-background: var(--base-background-color);
+
+	/* Dark theme (defined once, applied via both selectors) */
+	--dark-color-bg-black: var(--color-black-dark);
+	--dark-color-primary: var(--color-mauve-light);
+	--dark-color-text: var(--color-white);
+	--dark-color-text-subtle: var(--color-white-shade-40);
+	--dark-color-text-inverse: var(--color-black);
+	--dark-color-bg-primary: var(--dark-color-bg-black);
+	--dark-color-bg-hero: var(--color-black-shade-10);
+	--dark-color-bg-emphasis: color-mix(in srgb, var(--pureblack) 10%, var(--dark-color-bg-black));
+	--dark-base-background-color: var(--dark-color-bg-black);
+	--dark-color-text-accent: var(--color-primary-tint-30);
+	--dark-color-text-accent-hover: var(--color-primary-tint-10);
+	--dark-color-border: var(--color-black);
+}
+
+/* Apply dark theme when OS preference is dark */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--color-primary: var(--dark-color-primary);
+		--color-text: var(--dark-color-text);
+		--color-text-subtle: var(--dark-color-text-subtle);
+		--color-text-inverse: var(--dark-color-text-inverse);
+		--color-bg-primary: var(--dark-color-bg-primary);
+		--color-bg-hero: var(--dark-color-bg-hero);
+		--color-bg-emphasis: var(--dark-color-bg-emphasis);
+		--base-background-color: var(--dark-base-background-color);
+		--color-background: var(--base-background-color);
+		--color-text-accent: var(--dark-color-text-accent);
+		--color-text-accent-hover: var(--dark-color-text-accent-hover);
+		--color-border: var(--dark-color-border);
+	}
+}
+
+/* Allow data-theme="dark" to override light mode preference */
+@media (prefers-color-scheme: light), (prefers-color-scheme: no-preference) {
+	[data-theme='dark'] {
+		--color-primary: var(--dark-color-primary);
+		--color-text: var(--dark-color-text);
+		--color-text-subtle: var(--dark-color-text-subtle);
+		--color-text-inverse: var(--dark-color-text-inverse);
+		--color-bg-primary: var(--dark-color-bg-primary);
+		--color-bg-hero: var(--dark-color-bg-hero);
+		--color-bg-emphasis: var(--dark-color-bg-emphasis);
+		--base-background-color: var(--dark-base-background-color);
+		--color-background: var(--base-background-color);
+		--color-text-accent: var(--dark-color-text-accent);
+		--color-text-accent-hover: var(--dark-color-text-accent-hover);
+		--color-border: var(--dark-color-border);
+	}
+}
+
+/* Allow data-theme="light" to override dark mode preference */
+@media (prefers-color-scheme: dark) {
+	[data-theme='light'] {
+		--color-primary: var(--color-mauve-dark);
+		--color-text: var(--color-black);
+		--color-text-subtle: var(--color-black-tint-40);
+		--color-text-inverse: var(--color-white);
+		--color-bg-primary: var(--color-white);
+		--color-bg-hero: var(--color-white-shade-10);
+		--color-bg-emphasis: var(--color-white-shade-10);
+		--base-background-color: var(--color-white);
+		--color-background: var(--base-background-color);
+		--color-text-accent: var(--color-primary);
+		--color-text-accent-hover: var(--color-primary-tint-20);
+		--color-border: var(--color-white-shade-20);
+	}
+}
