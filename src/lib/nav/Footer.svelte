@@ -69,5 +69,15 @@
       align-items: flex-start;
       gap: 0.75rem;
     }
+
+    .links {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .links :global(a) {
+      font-size: 1rem;
+    }
   }
 </style>

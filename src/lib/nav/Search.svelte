@@ -116,6 +116,8 @@
     padding: 0.5rem;
     z-index: 40;
     min-width: 14rem;
+    width: min(20rem, calc(100vw - 2rem));
+    max-width: calc(100vw - 2rem);
   }
 
   .search-input {

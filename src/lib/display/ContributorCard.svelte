@@ -92,7 +92,6 @@
     align-items: center;
     padding: 1rem 1.25rem;
     border: 1px solid var(--color-border);
-    border-radius: 16px;
     background: linear-gradient(
       135deg,
       color-mix(in srgb, var(--color-bg-emphasis) 85%, transparent),
@@ -131,6 +130,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
+    align-items: flex-start;
   }
 
   .name {
@@ -163,14 +163,17 @@
     .contributor-card {
       grid-template-columns: 1fr;
       text-align: center;
+      justify-items: center;
+      gap: 1.25rem;
+      padding: 1.25rem;
     }
 
-    .avatar {
-      margin: 0 auto;
+    .contributor-card :global(.avatar) {
+      margin: 0;
     }
 
-    .roles {
-      justify-content: center;
+    .meta {
+      align-items: center;
     }
 
     .contributor-card.hero {

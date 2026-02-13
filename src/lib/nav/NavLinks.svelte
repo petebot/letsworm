@@ -2,18 +2,37 @@
 
 <script lang="ts">
   import { page } from "$app/stores";
+  import { createEventDispatcher } from "svelte";
   import WormUnderline from "$lib/display/WormUnderline.svelte";
 
-  let { pages = [] }: {
+  const dispatch = createEventDispatcher<{
+    navigate: { event: MouseEvent; anchor: HTMLAnchorElement | null };
+  }>();
+
+  let {
+    pages = [],
+  }: {
     pages?: Array<{
       title: string;
       slug: { current: string };
       _id: string;
     }>;
   } = $props();
+
+  const handleAnchorClick = (event: MouseEvent) => {
+    const anchor =
+      event.currentTarget instanceof HTMLAnchorElement
+        ? event.currentTarget
+        : null;
+    dispatch("navigate", { event, anchor });
+  };
 </script>
 
-<a class={$page.url.pathname === "/" ? "active" : ""} href="/">
+<a
+  class={$page.url.pathname === "/" ? "active" : ""}
+  href="/"
+  onclick={handleAnchorClick}
+>
   Home
   {#if $page.url.pathname !== "/"}
     <WormUnderline />
@@ -22,6 +41,7 @@
 <a
   class={$page.url.pathname.startsWith("/issues") ? "active" : ""}
   href="/issues"
+  onclick={handleAnchorClick}
 >
   Issues
   {#if !$page.url.pathname.startsWith("/issues")}
@@ -31,6 +51,7 @@
 <a
   class={$page.url.pathname.startsWith("/contributors") ? "active" : ""}
   href="/contributors"
+  onclick={handleAnchorClick}
 >
   Contributors
   {#if !$page.url.pathname.startsWith("/contributors")}
@@ -43,6 +64,7 @@
       ? "active"
       : ""}
     href={`/pages/${pageItem.slug.current}`}
+    onclick={handleAnchorClick}
   >
     {pageItem.title}
     {#if $page.url.pathname !== `/pages/${pageItem.slug.current}`}

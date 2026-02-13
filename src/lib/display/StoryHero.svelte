@@ -96,7 +96,7 @@
     min-height: 90vh;
     width: 100%;
     max-width: 80rem;
-    padding: 1rem;
+    padding: clamp(0.75rem, 3vw, 1.5rem);
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -173,9 +173,10 @@
     position: absolute;
     bottom: 1rem;
     left: 1rem;
+    right: 1rem;
     z-index: 2;
-    max-width: 35rem;
-    padding: 2rem;
+    max-width: min(35rem, calc(100% - 2rem));
+    padding: clamp(1.25rem, 4vw, 2rem);
     box-sizing: border-box;
     background: var(--base-background-color, rgba(255, 255, 255, 0.85));
   }
@@ -216,6 +217,27 @@
   @media (min-width: 960px) {
     .title {
       font-size: clamp(1.8rem, 3.8vw, 4rem);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .story-hero {
+      min-height: min(80vh, 34rem);
+    }
+
+    .meta {
+      left: 0.75rem;
+      right: 0.75rem;
+      bottom: 0.75rem;
+      padding: 1.25rem;
+    }
+
+    .contributors {
+      gap: 0.6rem;
+    }
+
+    .excerpt {
+      font-size: 0.95rem;
     }
   }
 </style>
