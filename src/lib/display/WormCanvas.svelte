@@ -348,7 +348,7 @@
 <canvas
   bind:this={canvas}
   style="height:auto;background:transparent;display:block"
-/>
+></canvas>
 
 <style>
   canvas {

@@ -52,6 +52,7 @@
       in:fly={{ x: inFlyX, duration: inDuration, delay: inDelay }}
       out:fly={{ x: outFlyX, duration: outDuration }}
     >
+      <!-- svelte-ignore slot_element_deprecated -->
       <slot />
     </div>
   {/key}
@@ -62,6 +63,7 @@
       in:blur={{ duration: inDuration, delay: inDelay }}
       out:offsetFade={{ duration: outDuration }}
     >
+      <!-- svelte-ignore slot_element_deprecated -->
       <slot />
     </div>
   {/key}

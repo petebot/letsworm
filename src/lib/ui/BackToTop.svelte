@@ -18,7 +18,7 @@
 <button
   class="back-to-top"
   aria-label="Back to top"
-  on:click={scrollToTop}
+  onclick={scrollToTop}
   class:visible
   aria-hidden={!visible}
   tabindex={visible ? 0 : -1}
