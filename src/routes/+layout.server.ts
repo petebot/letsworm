@@ -1,11 +1,7 @@
-import type { LayoutLoad } from "./$types";
+import type { LayoutServerLoad } from "./$types";
 import client from "../sanity";
 
-export const load: LayoutLoad = async ({
-  url: { pathname },
-}: {
-  url: { pathname: string };
-}) => {
+export const load: LayoutServerLoad = async ({ url }) => {
   const pages = await client.fetch(`
     *[_type == "page" && includeInNav == true] | order(_createdAt asc) {
       title,
@@ -14,6 +10,5 @@ export const load: LayoutLoad = async ({
     }
   `);
 
-  return { pathname, pages };
+  return { pathname: url.pathname, pages };
 };
-

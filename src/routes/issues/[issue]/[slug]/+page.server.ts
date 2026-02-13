@@ -1,9 +1,9 @@
-import client from '../../../../sanity';
+import type { PageServerLoad } from "./$types";
+import client from "../../../../sanity";
 
-export const load = async ({ params }: { params: any }) => {
+export const load: PageServerLoad = async ({ params }) => {
   const { slug, issue } = params;
 
-  // Fetch the current post data
   const post = await client.fetch(
     `
     *[_type == "post" && slug.current == $slug][0]{
@@ -28,7 +28,6 @@ export const load = async ({ params }: { params: any }) => {
     return { data: { post: null, relatedPosts: [], suitePosts: [], issue: null } };
   }
 
-  // Fetch related posts based on the same categories
   const categoryIds: string[] | undefined = post?.categories?.map((c: any) => c._id);
   const relatedPosts = await client.fetch(
     `
@@ -45,7 +44,6 @@ export const load = async ({ params }: { params: any }) => {
     { slug, categoryIds }
   );
 
-  // Fetch issue metadata (if present) by slug or issueNumber
   const issueData = await client.fetch(
     `*[_type == "issue" && (slug.current == $issue || issueNumber == $issue)][0]{ title, issueNumber, slug }`,
     { issue }
