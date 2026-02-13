@@ -69,7 +69,12 @@
 
   <div class="meta">
     {#if resolvedEyebrow}
-      <div class="eyebrow">{resolvedEyebrow}</div>
+      <div
+        class="eyebrow"
+        style:font-size={variant === "hero" ? "1rem" : "0.75rem"}
+      >
+        {resolvedEyebrow}
+      </div>
     {/if}
     <div class="name">{name}</div>
 
@@ -112,13 +117,14 @@
 
   .contributor-card.hero {
     gap: 2rem;
-    padding: 2rem;
-    border-radius: 28px;
-    background: linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--color-bg-emphasis) 90%, transparent),
-      color-mix(in srgb, var(--color-primary-a20) 35%, transparent)
-    );
+    padding: 0;
+    border: none;
+    background: transparent;
+  }
+
+  .contributor-card.hero .meta {
+    gap: 0rem;
+    line-height: 2rem;
   }
 
   .meta {
@@ -144,7 +150,8 @@
     margin: 0;
     text-transform: uppercase;
     letter-spacing: 0.3em;
-    font-size: 0.75rem;
+    font-size: 1rem;
+    font-family: var(--font-head);
   }
 
   .stats {

@@ -39,45 +39,59 @@ export type BylinePart = {
   label: string;
 };
 
+export type ContributorEntry<T = NameLike> = {
+  role: "author" | "illustrator";
+  name: string;
+  label: string;
+  person: T | null;
+  isPrompter: boolean;
+};
+
+export const getContributorEntries = (params: {
+  author?: NameLike;
+  illustrator?: NameLike;
+  promptedByRole?: PromptedByRole;
+  formatName?: FormatName;
+}): ContributorEntry[] => {
+  const { author, illustrator, promptedByRole, formatName } = params;
+  const orderedRoles = getOrderedRoles(promptedByRole);
+
+  return orderedRoles
+    .map((role, idx) => {
+      const source = role === "author" ? author : illustrator;
+      const name = resolveName(source, formatName);
+      if (!name) return null;
+
+      const isPrompter = idx === 0;
+      let label: string;
+
+      if (isPrompter) {
+        label = role === "author" ? "Prompted and Written by" : "Prompted and Illustrated by";
+      } else {
+        label = role === "author" ? "Written by" : "Illustrated by";
+      }
+
+      return {
+        role,
+        name,
+        label,
+        person:
+          source && typeof source === "object" && !Array.isArray(source)
+            ? (source as NameLike)
+            : null,
+        isPrompter,
+      } satisfies ContributorEntry;
+    })
+    .filter((entry): entry is ContributorEntry => entry !== null);
+};
+
 export const getBylinePartsWithLabels = (params: {
   author?: NameLike;
   illustrator?: NameLike;
   promptedByRole?: PromptedByRole;
   formatName?: FormatName;
 }): BylinePart[] => {
-  const { author, illustrator, promptedByRole, formatName } = params;
-  const orderedRoles = getOrderedRoles(promptedByRole);
-  
-  return orderedRoles
-    .map((role, idx) => {
-      const name = role === "author" 
-        ? resolveName(author, formatName)
-        : resolveName(illustrator, formatName);
-      
-      if (!name) return null;
-      
-      const isPrompter = idx === 0;
-      let label: string;
-      
-      if (isPrompter) {
-        // First person in order is the prompter
-        if (role === "author") {
-          label = "Prompted and Written by";
-        } else {
-          label = "Prompted and Illustrated by";
-        }
-      } else {
-        // Second person is the responder
-        if (role === "author") {
-          label = "Written by";
-        } else {
-          label = "Illustrated by";
-        }
-      }
-      
-      return { name, label };
-    })
-    .filter((part): part is BylinePart => part !== null);
+  return getContributorEntries(params).map(({ name, label }) => ({ name, label }));
 };
 
 export const getByline = (params: {

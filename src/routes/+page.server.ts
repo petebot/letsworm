@@ -14,9 +14,27 @@ const LATEST_ISSUE_QUERY = `*[_type == "issue" && published == true] | order(iss
     excerpt,
     slug,
     promptedBy,
-    "author": coalesce(author->name, author->givenName + " " + select(defined(author->middleName) => author->middleName + " ", "") + author->familyName),
+    "author": author->{
+      _id,
+      name,
+      givenName,
+      middleName,
+      familyName,
+      slug,
+      image
+    },
+    "authorDisplayName": coalesce(author->name, author->givenName + " " + select(defined(author->middleName) => author->middleName + " ", "") + author->familyName),
     "writer": coalesce(writer->name, writer->givenName + " " + select(defined(writer->middleName) => writer->middleName + " ", "") + writer->familyName),
-    "illustrator": coalesce(illustrator->name, illustrator->givenName + " " + select(defined(illustrator->middleName) => illustrator->middleName + " ", "") + illustrator->familyName),
+    "illustrator": illustrator->{
+      _id,
+      name,
+      givenName,
+      middleName,
+      familyName,
+      slug,
+      image
+    },
+    "illustratorDisplayName": coalesce(illustrator->name, illustrator->givenName + " " + select(defined(illustrator->middleName) => illustrator->middleName + " ", "") + illustrator->familyName),
     "categories": categories[]->{
       _id,
       title,

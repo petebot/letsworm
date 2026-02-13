@@ -4,7 +4,9 @@
   import { PortableText } from "@portabletext/svelte";
   import InlineImage from "$lib/display/InlineImage.svelte";
   import { normalizeIssueNumber } from "$lib/helpers/formatIssueNumber";
-  import { getBylinePartsWithLabels } from "$lib/helpers/formatByline";
+  import { getContributorEntries } from "$lib/helpers/formatByline";
+  import { formatContributorName } from "$lib/helpers/formatContributorName";
+  import ContributorLink from "$lib/display/ContributorLink.svelte";
 
   export let data: any;
 
@@ -13,10 +15,12 @@
   let suitePosts = data.data.suitePosts ?? [];
   let issue = data.data.issue ?? null;
 
-  $: bylineParts = getBylinePartsWithLabels({
-    author: post?.author,
-    illustrator: post?.illustrator,
+  $: contributorEntries = getContributorEntries({
+    author: post?.author ?? post?.authorDisplayName,
+    illustrator: post?.illustrator ?? post?.illustratorDisplayName,
     promptedByRole: post?.promptedBy,
+    formatName: (value) =>
+      typeof value === "string" ? value : formatContributorName(value),
   });
 
   function formatDate(dateString: string): string {
@@ -51,13 +55,24 @@
     {/if}
     <div class="metadata">
       {#if post.publishedAt}
-        <p>{formatDate(post.publishedAt)}</p>
+        <p class="meta-item">{formatDate(post.publishedAt)}</p>
       {/if}
-      {#each bylineParts as part}
-        <p>{part.label} {part.name}</p>
-      {/each}
+      {#if contributorEntries.length > 0}
+        <div class="meta-contributors">
+          {#each contributorEntries as entry (entry.role + entry.name)}
+            <ContributorLink
+              contributor={entry.person ?? entry.name}
+              label={entry.label}
+              showAvatar={true}
+              avatarSize="small"
+            />
+          {/each}
+        </div>
+      {/if}
       {#if issue}
-        <p>From Issue Nº {normalizeIssueNumber(issue.issueNumber)}</p>
+        <p class="meta-item">
+          From Issue Nº {normalizeIssueNumber(issue.issueNumber)}
+        </p>
       {/if}
       <!-- {#if post.categories}
         {#each post.categories as category}
@@ -108,5 +123,23 @@
   }
   .write {
     font-size: 1.4rem;
+  }
+  .metadata {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-self: stretch;
+    margin: 1.5rem 0;
+  }
+  .meta-item {
+    margin: 0;
+    color: var(--color-text-subtle);
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+  }
+  .meta-contributors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
 </style>

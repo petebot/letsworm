@@ -1,5 +1,7 @@
 <script lang="ts">
   import { urlFor } from "../../sanity";
+  import ContributorLink from "./ContributorLink.svelte";
+  import type { ContributorEntry } from "$lib/helpers/formatByline";
 
   export let story: {
     _id: string;
@@ -15,6 +17,8 @@
   };
   export let href: string;
   export let byline: string[] = [];
+  export let contributors: ContributorEntry[] = [];
+  export let showContributorAvatars = false;
 
   const getHotspotPosition = (
     image: Record<string, unknown> | null | undefined,
@@ -49,7 +53,18 @@
 
   <div class="story-content">
     <div class="story-meta">
-      {#if byline.length > 0}
+      {#if contributors.length > 0}
+        <div class="story-contributors">
+          {#each contributors as entry (entry.role + entry.name)}
+            <ContributorLink
+              contributor={entry.person ?? entry.name}
+              label={entry.label}
+              showAvatar={showContributorAvatars}
+              avatarSize="tiny"
+            />
+          {/each}
+        </div>
+      {:else if byline.length > 0}
         <div class="story-labels">
           {#each byline as name}
             <span>{name}</span>
@@ -142,6 +157,13 @@
 
   .story-labels span {
     color: var(--color-text-subtle);
+  }
+
+  .story-contributors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
   }
 
   @media (max-width: 640px) {

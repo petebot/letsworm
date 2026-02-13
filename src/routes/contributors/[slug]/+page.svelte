@@ -3,7 +3,7 @@
   import ContributorCard from "$lib/display/ContributorCard.svelte";
   import StoryCard from "$lib/display/StoryCard.svelte";
   import { formatContributorName } from "$lib/helpers/formatContributorName";
-  import { getBylineParts } from "$lib/helpers/formatByline";
+  import { getContributorEntries } from "$lib/helpers/formatByline";
 
   export let data: { contributor?: any };
 
@@ -40,6 +40,15 @@
     if (issueSegment) return `/issues/${issueSegment}/${story.slug?.current}`;
     return story.slug?.current ? `/${story.slug.current}` : "#";
   };
+
+  const buildContributors = (story: any) =>
+    getContributorEntries({
+      author: story.author ?? story.authorDisplayName,
+      illustrator: story.illustrator ?? story.illustratorDisplayName,
+      promptedByRole: story.promptedBy,
+      formatName: (value) =>
+        typeof value === "string" ? value : formatContributorName(value),
+    });
 </script>
 
 <svelte:head>
@@ -58,6 +67,7 @@
       <ContributorCard {contributor} variant="hero" link={false} {statsText} />
 
       {#if contributor.bio}
+        <h2>Biography</h2>
         <article class="bio">
           <PortableText value={contributor.bio} components={{}} />
         </article>
@@ -74,16 +84,13 @@
       {:else}
         <div class="story-grid">
           {#each stories as story (story._id)}
+            {@const entries = buildContributors(story)}
             <StoryCard
               {story}
               href={buildStoryLink(story)}
-              byline={getBylineParts({
-                author: story.author,
-                illustrator: story.illustrator,
-                promptedByRole: story.promptedBy,
-                formatName: (v) =>
-                  typeof v === "string" ? v : formatContributorName(v),
-              })}
+              contributors={entries}
+              byline={entries.map((entry) => entry.name)}
+              showContributorAvatars={true}
             />
           {/each}
         </div>

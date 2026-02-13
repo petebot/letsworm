@@ -1,9 +1,13 @@
 <script lang="ts">
   import WormWiggler from "./WormWiggler.svelte";
   import { urlFor } from "../../sanity";
+  import ContributorLink from "./ContributorLink.svelte";
+  import type { ContributorEntry } from "$lib/helpers/formatByline";
   // StoryHero: large visual hero for individual stories or story previews
   export let title: string = "Untitled";
   export let byline: string | null = null;
+  export let contributors: ContributorEntry[] = [];
+  export let showContributorAvatars = false;
   export let excerpt: string | null = null;
   export let coverImage: Record<string, unknown> | null = null;
   export let coverUrl: string | null = null;
@@ -52,7 +56,20 @@
     <div class="cover" aria-hidden="true"></div>
 
     <div class="meta">
-      {#if byline}
+      {#if contributors.length > 0}
+        <ul class="contributors">
+          {#each contributors as entry (entry.role + entry.name)}
+            <li>
+              <ContributorLink
+                contributor={entry.person ?? entry.name}
+                label={entry.label}
+                showAvatar={showContributorAvatars}
+                avatarSize="tiny"
+              />
+            </li>
+          {/each}
+        </ul>
+      {:else if byline}
         <div class="byline">{byline}</div>
       {/if}
 
@@ -161,11 +178,22 @@
     background: var(--base-background-color, rgba(255, 255, 255, 0.85));
   }
 
+  .contributors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding: 0;
+    margin: 0 0 0.5rem 0;
+    list-style: none;
+  }
+
   .byline {
     color: var(--color-text-subtle, rgba(255, 255, 255, 0.85));
     font-size: 0.95rem;
     margin-bottom: 0.5rem;
     letter-spacing: 0.08em;
+    font-family: var(--font-head);
+    text-transform: uppercase;
   }
 
   .title {

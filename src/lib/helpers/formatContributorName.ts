@@ -3,6 +3,9 @@ export type ContributorName = {
   givenName?: string | null;
   middleName?: string | null;
   familyName?: string | null;
+  slug?: { current?: string | null } | null;
+  image?: Record<string, unknown> | null;
+  _id?: string | null;
 };
 
 export const formatContributorName = (person?: ContributorName | null): string => {

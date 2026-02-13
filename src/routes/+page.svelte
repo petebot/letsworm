@@ -2,7 +2,8 @@
   import IssueHero from "$lib/display/IssueHero.svelte";
   import StoryHero from "$lib/display/StoryHero.svelte";
   import type { Post } from "$lib/data/posts";
-  import { getByline } from "$lib/helpers/formatByline";
+  import { getByline, getContributorEntries } from "$lib/helpers/formatByline";
+  import { formatContributorName } from "$lib/helpers/formatContributorName";
 
   type Issue = {
     title?: string;
@@ -92,7 +93,17 @@
           author: item.author,
           illustrator: item.illustrator,
           promptedByRole: item.promptedBy,
+          formatName: (value) =>
+            typeof value === "string" ? value : formatContributorName(value),
         })}
+        contributors={getContributorEntries({
+          author: item.author ?? item.authorDisplayName,
+          illustrator: item.illustrator ?? item.illustratorDisplayName,
+          promptedByRole: item.promptedBy,
+          formatName: (value) =>
+            typeof value === "string" ? value : formatContributorName(value),
+        })}
+        showContributorAvatars={true}
         excerpt={item.excerpt}
         coverImage={item?.mainImage ?? null}
         href={item?.slug?.current ? `/${item.slug.current}` : null}

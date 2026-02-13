@@ -11,23 +11,28 @@
     contributor = null,
     alt = "",
     size = "default",
-    hideInitials = false
+    hideInitials = false,
   }: {
-    contributor?: (ContributorName & {
-      image?: Record<string, unknown> | null;
-    }) | null;
+    contributor?:
+      | (ContributorName & {
+          image?: Record<string, unknown> | null;
+        })
+      | null;
     alt?: string;
-    size?: "small" | "default" | "large";
+    size?: "tiny" | "small" | "default" | "large";
     hideInitials?: boolean;
   } = $props();
 
-  let initials = $derived(hideInitials ? "" : getContributorInitials(contributor));
+  let initials = $derived(
+    hideInitials ? "" : getContributorInitials(contributor),
+  );
 </script>
 
 <div
   class="avatar"
   class:small={size === "small"}
   class:large={size === "large"}
+  class:tiny={size === "tiny"}
 >
   {#if contributor?.image}
     <img
@@ -58,6 +63,12 @@
     place-items: center;
     border: 1px solid color-mix(in srgb, var(--color-black) 10%, transparent);
     flex-shrink: 0;
+  }
+
+  .avatar.tiny {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
   }
 
   .avatar.small {
@@ -92,5 +103,9 @@
 
   .avatar.small .initials {
     font-size: 1.1rem;
+  }
+
+  .avatar.tiny .initials {
+    font-size: 0.75rem;
   }
 </style>

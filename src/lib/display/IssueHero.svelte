@@ -108,6 +108,7 @@
     max-width: 80rem;
     padding: clamp(1rem, 4vw, 4rem);
     box-sizing: border-box;
+    margin: 0 auto;
   }
 
   .title-wrap {
