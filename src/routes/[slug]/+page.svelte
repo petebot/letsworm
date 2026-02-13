@@ -82,11 +82,6 @@
           {/each}
         </div>
       {/if}
-      {#if worm.categories}
-        {#each worm.categories as category}
-          <p class="meta-item">{category.title}</p>
-        {/each}
-      {/if}
     </div>
     {#if worm.body}
       <div class="write">

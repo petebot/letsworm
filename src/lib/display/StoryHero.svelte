@@ -15,6 +15,7 @@
   export let link: boolean | string = true;
   $: normalizedLink = link === true || link === "true";
   $: tag = href && normalizedLink ? "a" : "div";
+  $: allowContributorLinks = tag !== "a";
   export let height: string = "min(48vh, 35rem)";
   // allow tuning the focal point of the cover
   export let coverPosition: string = "center center";
@@ -65,6 +66,7 @@
                 label={entry.label}
                 showAvatar={showContributorAvatars}
                 avatarSize="tiny"
+                link={allowContributorLinks}
               />
             </li>
           {/each}

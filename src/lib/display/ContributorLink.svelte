@@ -89,7 +89,7 @@
     transition: box-shadow 160ms ease;
   }
 
-  .contributor-link.has-avatar:hover {
+  a.contributor-link.has-avatar:hover {
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
   }
 
@@ -122,7 +122,7 @@
     gap: 0.25rem;
   }
 
-  .contributor-link.no-avatar:hover {
+  a.contributor-link.no-avatar:hover {
     text-decoration: underline;
   }
 </style>

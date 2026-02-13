@@ -61,6 +61,7 @@
               label={entry.label}
               showAvatar={showContributorAvatars}
               avatarSize="tiny"
+              link={false}
             />
           {/each}
         </div>

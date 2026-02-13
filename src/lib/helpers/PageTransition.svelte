@@ -5,10 +5,15 @@
   import { get } from "svelte/store";
   import { navigationStore } from "$lib/store.js";
 
-  let { inDelay = 200, inDuration = 200, outDuration = 200, pathname = "" } = $props();
+  let {
+    inDelay = 200,
+    inDuration = 200,
+    outDuration = 200,
+    pathname = "",
+  } = $props();
 
   let navState = $state(get(navigationStore));
-  
+
   // Subscribe to navigation store
   $effect(() => {
     const unsubscribe = navigationStore.subscribe((value) => {
