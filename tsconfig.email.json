@@ -1,0 +1,20 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": ".tmp/email-cli",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "noEmit": false,
+    "checkJs": false,
+    "declaration": false,
+    "sourceMap": false,
+    "types": ["node"]
+  },
+  "include": [
+    "scripts/email/**/*.ts",
+    "src/lib/server/email/**/*.ts",
+    "src/mjml.d.ts"
+  ],
+  "exclude": ["src/lib/server/email/**/*.spec.ts"]
+}
