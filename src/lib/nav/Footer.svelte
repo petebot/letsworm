@@ -26,7 +26,7 @@
     </nav>
 
     <div class="meta">
-      <small>© {year} Letsworm. All rights reserved.</small>
+      <small>© {year} Let's Worm. All rights reserved.</small>
     </div>
   </div>
 </footer>

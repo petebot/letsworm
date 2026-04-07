@@ -1,22 +1,22 @@
-/* Main Stylesheet - Organized Imports */
+/* Main stylesheet */
 
-/* 1. Colors */
-@import './styles/_colors.css';
+/* 1. Generated Design Tokens */
+@import "./styles/_tokens.css";
 
 /* 2. Themes (Light & Dark) */
-@import './styles/_themes.css';
+@import "./styles/_themes.css";
 
 /* 3. Typography */
-@import './styles/_typography.css';
+@import "./styles/_typography.css";
 
-/* 4. Spacing & Layout */
-@import './styles/_spacing.css';
+/* 4. Layout Utilities */
+@import "./styles/_spacing.css";
 
 /* 5. Component Tokens */
-@import './styles/_components.css';
+@import "./styles/_components.css";
 
 /* 6. Base Styles */
-@import './styles/_base.css';
+@import "./styles/_base.css";
 
 /* 7. Utilities */
-@import './styles/_utilities.css';
+@import "./styles/_utilities.css";
