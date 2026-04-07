@@ -12,6 +12,7 @@ export const load: PageServerLoad = async ({ url }) => {
     previewUrl: "/dev/email/welcome/preview",
     subject: `Let's Worm: ${welcomeExample.issueTitle}`,
     propsPath: "scripts/email/examples/welcome.json",
-    localLogoUrl: `${url.origin}/branding/oneworm.svg`,
+    localOneWormUrl: `${url.origin}/branding/oneworm.png`,
+    localLogoUrl: `${url.origin}/branding/letsworm-logo.png`,
   };
 };

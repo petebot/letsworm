@@ -7,7 +7,7 @@
 		"theme:check": "node scripts/theme/build-tokens.mjs --check",
 		"build": "npm run theme:build && svelte-kit sync && vite build",
 		"preview": "vite preview",
-		"email:build-cli": "tsc -p tsconfig.email.json",
+		"email:build-cli": "svelte-kit sync && tsc -p tsconfig.email.json",
 		"email:preview": "npm run email:build-cli && node .tmp/email-cli/scripts/email/render.js preview",
 		"email:export": "npm run email:build-cli && node .tmp/email-cli/scripts/email/render.js export",
 		"email:watch": "node scripts/email/watch.mjs",

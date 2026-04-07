@@ -67,7 +67,7 @@ const palette = {
   white: "#F6EEE8",
   black: "#271d09",
   mauveDark: "#8C5061",
-  mauve: "#C88B9E",
+  mauve: "#bf718e",
   mauveLight: "#D9A5B3",
   cream: "#F5F1E8",
   pureblack: "#000000",

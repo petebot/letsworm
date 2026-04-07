@@ -12,7 +12,8 @@ export const GET = async ({ url }) => {
 
   const email = renderWelcomeEmail({
     ...welcomeExample,
-    logoUrl: `${url.origin}/branding/oneworm.svg`,
+    oneWormUrl: `${url.origin}/branding/oneworm.png`,
+    logoUrl: `${url.origin}/branding/letsworm-logo.png`,
   });
 
   return new Response(email.html, {

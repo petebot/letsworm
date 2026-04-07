@@ -5,6 +5,7 @@ export interface WelcomeEmailInput {
   recipientName: string;
   ctaLabel: string;
   ctaUrl: string;
+  oneWormUrl?: string;
   logoUrl?: string;
   logoAlt?: string;
   issueTitle?: string;
@@ -55,6 +56,7 @@ export const renderWelcomeEmail = ({
   recipientName,
   ctaLabel,
   ctaUrl,
+  oneWormUrl,
   logoUrl,
   logoAlt = "Let's Worm",
   issueTitle,
@@ -67,6 +69,7 @@ export const renderWelcomeEmail = ({
   const escapedPreviewText = escapeHtml(previewText);
   const escapedCtaLabel = escapeHtml(ctaLabel);
   const escapedCtaUrl = escapeHtml(ctaUrl);
+  const escapedoneWormUrl = oneWormUrl ? escapeAttribute(oneWormUrl) : null;
   const escapedLogoUrl = logoUrl ? escapeAttribute(logoUrl) : null;
   const escapedLogoAlt = escapeHtml(logoAlt);
   const escapedClosing = escapeHtml(closing).replaceAll("\n", "<br />");
@@ -92,10 +95,11 @@ export const renderWelcomeEmail = ({
 				<mj-section padding="32px 20px 16px">
 					<mj-column background-color="${emailTheme.surface}" border="1px solid ${emailTheme.border}" padding="32px">
             ${
-              escapedLogoUrl
-                ? `<mj-image src="${escapedLogoUrl}" alt="${escapedLogoAlt}" width="80px" align="left" padding="0 0 16px" />`
+              escapedoneWormUrl
+                ? `<mj-image src="${escapedoneWormUrl}" alt="${escapedLogoAlt}" width="80px" align="left" padding="0 0 16px" />`
                 : `<mj-text font-size="28px" font-weight="700" line-height="1.2" padding="0 0 16px">Let's Worm</mj-text>`
             }
+            
 						<mj-text padding-top="24px">
 							Hi ${escapedName},
 						</mj-text>
@@ -113,7 +117,13 @@ export const renderWelcomeEmail = ({
 						>
 							${escapedCtaLabel}
 						</mj-button>
-						<mj-text padding-top="24px">
+            ${
+              escapedLogoUrl
+                ? `<mj-image src="${escapedLogoUrl}" alt="${escapedLogoAlt}" width="120px" align="left" padding="16px 16px 0" />`
+                : `<mj-text font-size="28px" font-weight="700" line-height="1.2" padding="0 0 16px">Let's Worm</mj-text>`
+            }
+						<mj-text>
+            
 							${escapedClosing}
 						</mj-text>
 					</mj-column>

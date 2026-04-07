@@ -1,3 +1,7 @@
+<script module lang="ts">
+  export const prerender = false;
+</script>
+
 <script lang="ts">
   let { data } = $props();
 </script>
@@ -5,10 +9,6 @@
 <svelte:head>
   <title>Email Preview | Let's Worm</title>
 </svelte:head>
-
-<script module lang="ts">
-  export const prerender = false;
-</script>
 
 <div class="shell">
   <div class="meta">
@@ -22,6 +22,7 @@
     <div class="details">
       <p><strong>Subject:</strong> {data.subject}</p>
       <p><strong>Sample props:</strong> {data.propsPath}</p>
+      <p><strong>Local oneWorm URL:</strong> {data.localOneWormUrl}</p>
       <p><strong>Local logo URL:</strong> {data.localLogoUrl}</p>
       <p><strong>Export command:</strong> <code>npm run email:export</code></p>
     </div>
@@ -91,4 +92,4 @@
     border: 0;
     background: white;
   }
- </style>
+</style>
