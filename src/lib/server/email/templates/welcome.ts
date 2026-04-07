@@ -42,7 +42,7 @@ const buildTextBody = ({
     "",
     intro,
     issueTitle ? "" : null,
-    issueTitle ? `Featured issue: ${issueTitle}` : null,
+    issueTitle ? `Featured Issue: ${issueTitle}` : null,
     "",
     `${ctaLabel}: ${ctaUrl}`,
     "",
@@ -93,7 +93,7 @@ export const renderWelcomeEmail = ({
 					<mj-column background-color="${emailTheme.surface}" border="1px solid ${emailTheme.border}" padding="32px">
             ${
               escapedLogoUrl
-                ? `<mj-image src="${escapedLogoUrl}" alt="${escapedLogoAlt}" width="150px" align="left" padding="0 0 16px" />`
+                ? `<mj-image src="${escapedLogoUrl}" alt="${escapedLogoAlt}" width="80px" align="left" padding="0 0 16px" />`
                 : `<mj-text font-size="28px" font-weight="700" line-height="1.2" padding="0 0 16px">Let's Worm</mj-text>`
             }
 						<mj-text padding-top="24px">
@@ -102,13 +102,14 @@ export const renderWelcomeEmail = ({
 						<mj-text>
 							${escapedIntro}
 						</mj-text>
-						${escapedIssueTitle ? `<mj-text font-style="italic">Featured issue: ${escapedIssueTitle}</mj-text>` : ""}
+						${escapedIssueTitle ? `<mj-text font-style="italic">Featured Issue: ${escapedIssueTitle}</mj-text>` : ""}
 						<mj-button
 							background-color="${emailTheme.accent}"
 							color="${emailTheme.accentText}"
 							font-size="15px"
 							href="${escapedCtaUrl}"
 							padding-top="24px"
+              align="left"
 						>
 							${escapedCtaLabel}
 						</mj-button>

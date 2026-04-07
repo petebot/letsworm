@@ -14,7 +14,8 @@ const watchedPaths = [
   "src/lib/server/email/templates/index.ts",
   "src/lib/server/email/templates/welcome.ts",
   "src/lib/theme/tokens.js",
-  "static/branding/letsworm-logo-stacked.svg",
+  "static/branding/letsworm-logo.svg",
+  "static/branding/oneworm.svg",
   "tsconfig.email.json",
   "package.json",
 ];

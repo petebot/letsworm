@@ -90,6 +90,15 @@ npm run email:preview
 
 That writes browser-openable HTML to `.tmp/email-previews/welcome.html`.
 
+For local iteration, use the normal Svelte dev server and open:
+
+```txt
+/dev/email/welcome
+```
+
+That route renders the compiled email HTML inside an iframe and uses local
+assets from the dev server.
+
 Watch and rebuild the preview while editing:
 
 ```bash
@@ -116,4 +125,4 @@ npm run email:export -- --template welcome --stdout > /tmp/welcome.html
 
 For Zoho, use the compiled output from `email:export`, not the MJML source.
 
-The email template can also render a hosted logo image. The Svelte component itself is not reusable in email, but the artwork is now available as [`static/branding/letsworm-logo-stacked.svg`](/Users/pnawara/Code/personal/letsworm/letsworm-website/static/branding/letsworm-logo-stacked.svg).
+The email template can also render a hosted logo image. The Svelte component itself is not reusable in email, but the artwork is now available as [`static/branding/letsworm-logo.svg`](/Users/pnawara/Code/personal/letsworm/letsworm-website/static/branding/letsworm-logo.svg).
