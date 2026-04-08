@@ -70,7 +70,7 @@
 /* Allow data-theme="light" to override dark mode preference */
 @media (prefers-color-scheme: dark) {
 	[data-theme='light'] {
-		--color-primary: var(--color-mauve-dark);
+		--color-primary: var(--color-primary-base);
 		--color-text: var(--color-black);
 		--color-text-subtle: var(--color-black-tint-40);
 		--color-text-inverse: var(--color-white);
