@@ -169,10 +169,10 @@ export const themeTokens = {
 };
 
 export const emailTheme = {
-  bodyBackground: color.black,
-  surface: color.black,
+  bodyBackground: color.white,
+  surface: color.white,
   border: color.whiteShade20,
-  text: color.white,
+  text: color.black,
   accent: color.primary,
   accentText: color.black,
   serifFont: "Georgia, Times New Roman, serif",
